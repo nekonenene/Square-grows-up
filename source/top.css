@@ -1,0 +1,85 @@
+@charset "UTF-8";
+/* フォント */
+.gothic {
+  font-family: inherit, "Helvetica Neue", Helvetica, Arial, Roboto, "Droid Sans", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif; }
+
+.mincho {
+  font-family: "Times New Roman", "游明朝", YuMincho, "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "メイリオ", Meiryo, serif; }
+
+/* 回り込み解除 */
+.clear {
+  clear: both;
+  height: 0;
+  font-size: 1px;
+  line-height: 0;
+  visibility: hidden; }
+
+/*----- サイトの全体レイアウト -----*/
+#site-box {
+  display: table;
+  width: 100%;
+  margin: 0;
+  padding: 0; }
+
+#site-main {
+  display: table;
+  width: 100%;
+  margin: 0;
+  padding: 0; }
+
+#footer {
+  clear: both;
+  width: auto;
+  padding: 5px 0 1px;
+  background-color: #f2f2ff;
+  color: #000000; }
+
+/*----- メインデザイン ------*/
+body {
+  font-family: inherit, "Helvetica Neue", Helvetica, Arial, Roboto, "Droid Sans", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+  font-size: 16px;
+  margin: 26px;
+  padding: 0; }
+
+p {
+  font-size: 100%;
+  letter-spacing: 0.02em; }
+
+img {
+  border: 0; }
+
+/*----- 以下、テキストの微変更用 -----*/
+.small {
+  font-size: 85%; }
+
+.moresmall {
+  font-size: 60%; }
+
+.big {
+  font-size: 120%; }
+
+.morebig {
+  font-size: 150%; }
+
+.b {
+  font-weight: bold; }
+
+.u {
+  text-decoration: underline; }
+
+.torikesi {
+  text-decoration: line-through; }
+
+/*----- 以下、文字カラー指定用のCSS -----*/
+.red {
+  color: #ff0000; }
+
+.navy {
+  /* 濃い青 */
+  color: #191970; }
+
+.orange {
+  color: #ff4500; }
+
+.green {
+  color: #399003; }

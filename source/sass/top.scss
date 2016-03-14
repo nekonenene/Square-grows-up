@@ -1,0 +1,63 @@
+/* フォント */
+$gothic: inherit, "Helvetica Neue", Helvetica, Arial, Roboto, "Droid Sans", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+
+$mincho: "Times New Roman", "游明朝", YuMincho, "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "メイリオ", Meiryo, serif;
+
+.gothic {
+  font-family: $gothic;
+}
+.mincho {
+  font-family: $mincho;
+}
+
+/* 回り込み解除 */
+.clear {
+  clear      : both;
+  height     : 0;
+  font-size  : 1px;
+  line-height: 0;
+  visibility : hidden;
+}
+
+/*----- サイトの全体レイアウト -----*/
+#site-box {
+  display: table;
+  width  : 100%;
+  margin : 0;
+  padding: 0;
+}
+#site-main {
+  display: table;
+  width  : 100%;
+  margin : 0;
+  padding: 0;
+}
+#footer {
+  clear           : both;
+  width           : auto;
+  padding         : 5px 0 1px;
+  background-color: #f2f2ff;
+  color           : #000000;
+}
+
+/*----- メインデザイン ------*/
+body {
+  font-family: $gothic;
+  font-size  : 16px;
+  // 上下左右に余白が入らないように
+  margin     : 26px;
+  padding    : 0;
+}
+p {
+  font-size     : 100%;
+  letter-spacing: 0.02em;
+}
+img {
+  border: 0;
+}
+
+// テキストの調整 small, big など
+@import "./text_decoration.scss";
+
+// 色の設定
+@import "./colors.scss";
