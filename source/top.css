@@ -1,10 +1,10 @@
 @charset "UTF-8";
 /* フォント */
 .gothic {
-  font-family: inherit, "Helvetica Neue", Helvetica, Arial, Roboto, "Droid Sans", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif; }
+  font-family: "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "Helvetica Neue", Helvetica, Arial, Roboto, "Droid Sans", "游ゴシック", YuGothic, sans-serif; }
 
 .mincho {
-  font-family: "Times New Roman", "游明朝", YuMincho, "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "メイリオ", Meiryo, serif; }
+  font-family: "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "メイリオ", Meiryo, "Times New Roman", "游明朝", YuMincho, serif; }
 
 /* 回り込み解除 */
 .clear {
@@ -15,38 +15,76 @@
   visibility: hidden; }
 
 /*----- サイトの全体レイアウト -----*/
+:root {
+  background-color: #f2faff; }
+
 #site-box {
   display: table;
-  width: 100%;
-  margin: 0;
-  padding: 0; }
+  width: 90%;
+  margin: 34px auto;
+  padding: 0;
+  background-color: #d1f4fa;
+  border: 2px ridge #2c2d0b; }
 
 #site-main {
-  display: table;
-  width: 100%;
+  display: block;
+  width: auto;
   margin: 0;
-  padding: 0; }
+  padding: 10px 8px 90px; }
 
 #footer {
   clear: both;
   width: auto;
-  padding: 5px 0 1px;
-  background-color: #f2f2ff;
-  color: #000000; }
+  margin: 0;
+  padding: 5px 12px 1px;
+  background-color: #2f2761;
+  color: #ffffff;
+  text-align: right; }
+  #footer a {
+    color: #ffffff; }
 
 /*----- メインデザイン ------*/
 body {
-  font-family: inherit, "Helvetica Neue", Helvetica, Arial, Roboto, "Droid Sans", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
-  font-size: 16px;
-  margin: 26px;
-  padding: 0; }
+  margin: 0;
+  padding: 0;
+  font-family: "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "Helvetica Neue", Helvetica, Arial, Roboto, "Droid Sans", "游ゴシック", YuGothic, sans-serif;
+  font-size: 17px; }
 
 p {
-  font-size: 100%;
-  letter-spacing: 0.02em; }
+  margin: 5px 26px;
+  letter-spacing: 0.06em;
+  font-size: 100%; }
 
 img {
   border: 0; }
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 25px 0;
+  padding: 0 26px;
+  letter-spacing: 0.08em; }
+
+h1 {
+  color: #f2911f;
+  font-size: 220%;
+  border-bottom: dotted 5px; }
+
+h2 {
+  color: #cfbd49;
+  font-size: 150%;
+  border-bottom: dotted 4px; }
+
+h3 {
+  color: #c1e041;
+  font-size: 120%;
+  border-bottom: double 2px; }
+
+h4 {
+  color: #1f5e12;
+  font-size: 105%;
+  border-bottom: solid 1px; }
 
 /*----- 以下、テキストの微変更用 -----*/
 .small {
