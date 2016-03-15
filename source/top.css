@@ -4,7 +4,7 @@
   font-family: "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "Helvetica Neue", Helvetica, Arial, Roboto, "Droid Sans", "游ゴシック", YuGothic, sans-serif; }
 
 .mincho {
-  font-family: "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "メイリオ", Meiryo, "Times New Roman", "游明朝", YuMincho, serif; }
+  font-family: "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "游明朝", YuMincho, "ＭＳ 明朝", "メイリオ", Meiryo, "Times New Roman", serif; }
 
 /* 回り込み解除 */
 .clear {
@@ -66,10 +66,7 @@ svg#sample {
   border: 4px solid #6b6560;
   border-radius: 6px; }
 
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4 {
   margin: 25px 0;
   padding: 0 26px;
   letter-spacing: 0.08em; }
@@ -121,7 +118,6 @@ h4 {
   color: #ff0000; }
 
 .navy {
-  /* 濃い青 */
   color: #191970; }
 
 .orange {
