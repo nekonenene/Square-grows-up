@@ -16,6 +16,7 @@ window.addEventListener("load", function () {
 
 }, false);
 
+
 /* x点の座標をもらってきて、そこから x角形を作成する */
 function createSquare(pointsArray)
 {
