@@ -9,7 +9,7 @@ window.addEventListener("load", function () {
 	}
 
 	var svgField = d3.select("svg#sample").attr({
-		"transform": "scale(1) translate(100, 40)"
+		"transform": "scale(1) translate(80, 80)"
 	});
 }, false);
 
@@ -28,11 +28,17 @@ function createSquare(pointsArray) {
 		"stroke": "#3e3833",
 		"stroke-width": 2,
 		"fill": "none",
-		"shape-rendering": "optimizeSpeed" });
+		"shape-rendering": "optimizeSpeed", // アンチエイリアスをおこなわない
+		"transform": "scale(0.1)"
+	});
+
+	/* だんだん大きくなる */
+	path.transition().duration(1400).attr({
+		"transform": "translate(-60,-60) scale(1)"
+	});
 }
 
 /* 内側に x角形を作るための次の四点を計算する */
-// アンチエイリアスをおこなわない
 function calculateNextPoints(pointsArray) {
 	var vertices = pointsArray.length;
 

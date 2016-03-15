@@ -68,10 +68,7 @@ gulp.task('babel', function() {
 /* Sass + Scss , and CSS Next */
 gulp.task('sass', function() {
 	gulp.src(['./source/sass/**/*.{sass,scss}'])
-		.pipe(sass())
-		.on('error', function(err) {
-			console.log(err.message);
-		})
+		.pipe(sass().on('error', sass.logError))
 		.pipe(cssNext())
 		.pipe(gulp.dest('./source/'));
 });
