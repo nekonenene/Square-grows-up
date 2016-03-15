@@ -3,6 +3,9 @@
 資料/
 optimized/
 
+### Bundler
+.bundle/
+vendor/bundle/
 
 ### Node
 # Logs
