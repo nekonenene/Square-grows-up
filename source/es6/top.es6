@@ -27,21 +27,24 @@ function createSquare(pointsArray)
 	                .y(function(d,i) { return pointsArray[i][1]; })
 	                .interpolate("linear");
 
+	/* path の SVG については難しいので、以下でオプションを参照のこと
+	 * http://www.h2.dion.ne.jp/~defghi/svgMemo/svgMemo_03.htm */
 	var path = svgField.append("path")
     	.attr({
-        	"d"              : lineFunction(pointsArray)+"z", // z オプションによって図形は閉じられる
-        	"stroke"         : "#3e3833",
-        	"stroke-width"   : 2,
-			"fill"           : "none",
-			"shape-rendering": "optimizeSpeed", // アンチエイリアスをおこなわない
-			"transform"      : "scale(0.1)",
+        	"d"                : lineFunction(pointsArray)+"z", // z オプションによって図形は閉じられる
+        	"stroke"           : "#3e3833",
+        	"stroke-width"     : 2.5,
+			"fill"             : "none",
+			"shape-rendering"  : "auto", // アンチエイリアス設定
+			"transform"        : "scale(0.1)",
+			"stroke-linejoin"  : "round", // 頂点を丸める
 		});
 
 	/* だんだん大きくなる */
 	path.transition()
 		.duration(1400)
 		.attr({
-			"transform" :"translate(-60,-60) scale(1)",
+			"transform" :"translate(-60,-60) scale(2)",
 		});
 }
 
