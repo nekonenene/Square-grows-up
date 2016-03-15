@@ -28,7 +28,9 @@ gulp.task('default', ['copy', 'webServer', 'watch', 'compile'] );
 gulp.task('watch', function() {
     gulp.watch(['./source/{es6,sass,haml}/**/*'], ['compile']);
     gulp.watch(['./source/**/*.{gif,jpg,png,svg}'], ['imageMinify']);
-    gulp.watch(['./source/**/*.{js,css,html}'], ['codeMinify']);
+    gulp.watch(['./source/**/*.js']   , ['jsMinify']);
+    gulp.watch(['./source/**/*.css']  , ['cssMinify']);
+    gulp.watch(['./source/**/*.html'] , ['htmlMinify']);
     gulp.watch(['./source/**/*'], ['copy']);
 });
 
@@ -46,7 +48,7 @@ gulp.task('webServer', function() {
 
 /* COPY : HTML, CSS, JS などでないファイルを optimized にコピー */
 gulp.task('copy', function(cb) {
-	gulp.src(['./source/**/*', '!./source/**/*.{html,css,js,es6,sass,scss,gif,jpg,png,svg}'])
+	gulp.src(['./source/**/*', '!./source/**/*.{html,css,js,haml,es6,sass,scss,gif,jpg,png,svg}'])
 		.pipe(gulp.dest('./optimized/'));
 
 		// .DS_Store は削除
