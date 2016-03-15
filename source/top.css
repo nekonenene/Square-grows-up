@@ -58,6 +58,14 @@ p {
 img {
   border: 0; }
 
+svg#sample {
+  width: 800px;
+  height: 400px;
+  margin: 20px 50px;
+  padding: 30px;
+  border: 4px solid #6b6560;
+  border-radius: 6px; }
+
 h1,
 h2,
 h3,
