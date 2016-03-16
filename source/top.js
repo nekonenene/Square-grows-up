@@ -2,7 +2,14 @@ window.addEventListener("load", function () {
 	"use strict";
 
 	initRangeInput(1.0, 2.5);
+	setZoomInputListener();
+	setStrokeWidthInputListener();
 
+	growInnerSquare();
+}, false);
+
+/** 四角の中に四角をどんどん作っていく */
+function growInnerSquare() {
 	var xx = 10;var yy = 130;
 	var points = [[xx, xx], [yy, xx], [yy, yy], [xx, yy]];
 	createSquare(points);
@@ -20,10 +27,7 @@ window.addEventListener("load", function () {
 		createSquare(points);
 		var level = 1;
 	});
-
-	setZoomInputListener();
-	setStrokeWidthInputListener();
-}, false);
+}
 
 /** PATH を全て除去 */
 function deleteAll() {
