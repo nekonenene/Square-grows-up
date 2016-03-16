@@ -1,4 +1,9 @@
 @import "./regular_design.scss";
+@import "./modern_button.scss";
+@import "./modern_range_input.scss";
+
+$light-green: #1faa1c;
+$dark-green:  #1d7737;
 
 body {
 	margin          : 0;
@@ -9,99 +14,57 @@ body {
 	font-size       : 17px;
 }
 
+#content {
+	margin: 10px 26px;
+}
+
 p {
-	margin        : 10px 26px 8px;
-	letter-spacing: 0.06em;
+	margin        : 8px 0;
 	font-size     : 100%;
+	letter-spacing: 0.06em;
+}
+
+button#grow-button {
+	@include button-template($light-green, $dark-green);
 }
 
 svg#sample {
 	width        : 800px;
 	height       : 500px;
-	margin       : 20px 50px;
+	margin       : 20px;
 	padding      : 30px;
 	border       : 4px solid #6b6560;
 	border-radius: 6px;
 }
 
-@mixin button-template($bg-color, $bg-hover-color) {
-	display            : inline-block;
-	height             : 32px;
-	margin             : 8px 0;
-	padding            : 0 25.6px;
-	background         : $bg-color;
-	color              : #ffffff;
-	border             : 0;
-	border-radius      : 3px;
-	box-shadow         : none;
-	transition-property: background;
-	transition-duration: 0.3s;
-	line-height        : 32px;
-	font               : {
-		family: $gothic;
-		size  : 14px;
-		weight: 300;
-	}
-	text               : {
-		align     : center;
-		shadow    : none;
-		decoration: none;
-	}
-	&:hover {
-		background: $bg-hover-color;
-	}
+.range-input-box {
+	display      : table;
+	width        : 800px;
+	margin       : 0px 20px 8px;
+	background   : #cde2bb;
+	border-bottom: 3px solid $dark-green;
+	border-right : 5px solid $dark-green;
+	border-radius: 2em;
 }
 
-@mixin range-template($primary, $bar-height) {
-	$grey: #95a291;
-
-	width        : 40%;
-	height       : $bar-height;
-	margin       : 0;
-	padding      : 0;
-	background   : $primary;
-	border       : 0;
-	border-radius: $bar-height;
-	appearance   : none;
-	outline      : none;
-	cursor       : pointer;
-	&:focus {
-		outline: none;
-	}
-	&::-moz-range-track {
-		border       : inherit;
-		background   : transparent;
-		border-top   : 2em solid transparent;
-		border-bottom: 2em solid transparent;
-	}
-	&::-ms-track {
-		border    : inherit;
-		color     : transparent;
-		/* don't drawn vertical reference line */
-		background: transparent;
-	}
-	&::-ms-fill-lower,
-	&::-ms-fill-upper {
-		background: transparent;
-	}
-	&::-ms-tooltip {
-		display: none;
-	}
-	&::-ms-thumb {
-		width        : $bar-height;
-		height       : $bar-height;
-		border       : 0;
-		border-radius: 50%;
-		background   : radial-gradient(circle, white 0% , $grey 90% , $grey 100%);
-	}
+.range-title, .range-input, .range-output {
+	display: table-cell;
 }
-
-button#grow-button {
-	@include button-template(#00b233, #1d7737);
+.range-title {
+	width     : 8em;
+	text-align: center;
+}
+.range-input {
+	width: auto;
+}
+.range-output {
+	width: 8em;
+	padding-left: 2em;
 }
 
 input[type="range"] {
-	@include range-template(#1faa1c, 1em);
+	@include range-template($light-green, 1em);
+	width: 100%;
 }
 
 // テキストの調整 small, big など

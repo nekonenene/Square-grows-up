@@ -34,20 +34,27 @@
 		#site-box
 			#site-main
 				%h1 正方形を育てよう！
-				%p
-					本日はお日柄もよく、ようこそおいでくださいました。
-					%br>
-					スタッフ一同、心より感謝申し上げます。
-					%br>
-					%button#grow-button{type:"button"} 成長させる
-				.svg-field
-					%svg#sample
-				.zoom
-				%p
-					zoom
-					%input#zoom-level{type:"range", min:0.5, max:4, step:0.1, value:1}
-					%br
-					線幅
-					%input#stroke-width-level{type:"range", min:0.1, max:5, step:0.1}
+				#content
+					%p
+						エサをあげてください。
+						%br>
+						%button#grow-button{type:"button"} 成長させる
+					.svg-field
+						%svg#sample
+					.zoom
+						.range-input-box
+							.range-title
+								%p zoom
+							.range-input
+								%input#zoom-level{type:"range", min:0.1, max:10, step:0.1, value:1}
+							.range-output
+								%p xxx 倍
+						.range-input-box
+							.range-title
+								%p 線幅
+							.range-input
+								%input#stroke-width-level{type:"range", min:0.1, max:10, step:0.1}
+							.range-output
+								%p xxx px
 			#footer
 				%a{href: "http://nekonenene.hatenablog.com/", target: "_blank", title: "ハトネコエWebがくしゅうちょう"} 制作：ハトネコエ

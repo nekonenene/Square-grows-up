@@ -15,21 +15,32 @@ window.addEventListener("load", function () {
 		createSquare(points);
 	});
 
+	setZoomInputListener();
+	setStrokeWidthInputListener();
+}, false);
+
+/** 「zoom」のスライダーに対してリスナー設定 */
+function setZoomInputListener() {
 	d3.select("input#zoom-level").on("change", function () {
 		console.log("zoom-level : " + this.value);
 		d3.select("svg#sample").selectAll("path").attr({
 			"transform": "translate(0, 0) scale(" + this.value + ")"
 		});
 	});
+}
 
+/** 「線幅」のスライダーに対してリスナー設定 */
+function setStrokeWidthInputListener() {
 	d3.select("input#stroke-width-level").on("change", function () {
 		d3.select("svg#sample").selectAll("path").attr({
 			"stroke-width": this.value
 		});
 	});
-}, false);
+}
 
-/* 成長させるボタンを押した時の反応 */
+/** 「成長させる」ボタンを押した時の反応
+	@param level : 成長段階（1～）
+	@param firstPoints : level=1 のときの座標配列 */
 function growSquareInside(level, firstPoints) {
 	var svgField = d3.select("svg#sample").selectAll("path").remove();
 

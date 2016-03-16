@@ -1,0 +1,43 @@
+@mixin range-template($primary-color, $bar-height) {
+	$grey: #95a291;
+
+	width        : 40%;
+	height       : $bar-height;
+	margin       : 0;
+	padding      : 0;
+	background   : $primary-color;
+	border       : 0;
+	border-radius: $bar-height;
+	appearance   : none;
+	outline      : none;
+	cursor       : pointer;
+	&:focus {
+		outline: none;
+	}
+	&::-moz-range-track {
+		border       : inherit;
+		background   : transparent;
+		border-top   : 2em solid transparent;
+		border-bottom: 2em solid transparent;
+	}
+	&::-ms-track {
+		border    : inherit;
+		color     : transparent;
+		/* don't drawn vertical reference line */
+		background: transparent;
+	}
+	&::-ms-fill-lower,
+	&::-ms-fill-upper {
+		background: transparent;
+	}
+	&::-ms-tooltip {
+		display: none;
+	}
+	&::-ms-thumb {
+		width        : $bar-height;
+		height       : $bar-height;
+		border       : 0;
+		border-radius: 50%;
+		background   : radial-gradient(circle, white 0% , $grey 90% , $grey 100%);
+	}
+}

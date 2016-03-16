@@ -27,20 +27,38 @@
     <div id="site-box">
       <div id="site-main">
         <h1>正方形を育てよう！</h1>
-        <p>
-          本日はお日柄もよく、ようこそおいでくださいました。<br>スタッフ一同、心より感謝申し上げます。<br><button id="grow-button" type="button">成長させる</button>
-        </p>
-        <div class="svg-field">
-          <svg id="sample"></svg>
+        <div id="content">
+          <p>
+            エサをあげてください。<br><button id="grow-button" type="button">成長させる</button>
+          </p>
+          <div class="svg-field">
+            <svg id="sample"></svg>
+          </div>
+          <div class="zoom">
+            <div class="range-input-box">
+              <div class="range-title">
+                <p>zoom</p>
+              </div>
+              <div class="range-input">
+                <input id="zoom-level" max="10" min="0.1" step="0.1" type="range" value="1">
+              </div>
+              <div class="range-output">
+                <p>xxx 倍</p>
+              </div>
+            </div>
+            <div class="range-input-box">
+              <div class="range-title">
+                <p>線幅</p>
+              </div>
+              <div class="range-input">
+                <input id="stroke-width-level" max="10" min="0.1" step="0.1" type="range">
+              </div>
+              <div class="range-output">
+                <p>xxx px</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="zoom"></div>
-        <p>
-          zoom
-          <input id="zoom-level" max="4" min="0.5" step="0.1" type="range" value="1">
-          <br>
-          線幅
-          <input id="stroke-width-level" max="5" min="0.1" step="0.1" type="range">
-        </p>
       </div>
       <div id="footer">
         <a href="http://nekonenene.hatenablog.com/" target="_blank" title="ハトネコエWebがくしゅうちょう">制作：ハトネコエ</a>
