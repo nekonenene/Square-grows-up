@@ -1,8 +1,7 @@
 window.addEventListener("load", function () {
 	"use strict";
 
-	d3.selectAll( "input#zoom-level" )[0][0].value = 1;
-	d3.selectAll( "input#stroke-width-level" )[0][0].value = 2.5;
+	initRangeInput(1.0, 2.5);
 
 	var xx = 10; var yy = 130;
 	var points = [ [xx, xx], [yy, xx], [yy, yy], [xx, yy] ];
@@ -16,22 +15,50 @@ window.addEventListener("load", function () {
 			createSquare( points );
 		});
 
+	d3.select( "button#init-button" )
+		.on("click", function(){
+			deleteAll();
+			points = [ [xx, xx], [yy, xx], [yy, yy], [xx, yy] ];
+			createSquare(points);
+			var level = 1;
+		});
+
 	setZoomInputListener();
 	setStrokeWidthInputListener();
 
 }, false);
+
+/** PATH を全て除去 */
+function deleteAll() {
+	var svgField = d3.select( "svg#sample" )
+		.selectAll("path")
+		.remove();
+}
+
+/** スライドバーのトグルの位置と、現在値の表示を初期化 */
+function initRangeInput(defaultZoom, defaultStrokeWidth)
+{
+	d3.selectAll( "input#zoom-level" )[0][0].value = defaultZoom;
+	d3.selectAll( "input#stroke-width-level" )[0][0].value = defaultStrokeWidth;
+	d3.selectAll( ".range-output" )[0][0].textContent = defaultZoom.toFixed(1) + " 倍" ;
+	d3.selectAll( ".range-output" )[0][1].textContent = defaultStrokeWidth.toFixed(1) + " px" ;
+}
 
 /** 「zoom」のスライダーに対してリスナー設定 */
 function setZoomInputListener()
 {
 	d3.select( "input#zoom-level" )
 		.on("change", function(){
-			console.log("zoom-level : " + this.value);
 			d3.select( "svg#sample" )
 				.selectAll("path")
 				.attr({
 					"transform" : "translate(0, 0) scale(" + this.value + ")"
 				});
+			d3.selectAll( ".range-output" )[0][0].textContent = Number(this.value).toFixed(1) + " 倍" ;
+			// TODO: ここの 150 はマジックナンバーなので、SVGのサイズに直したい
+			d3.selectAll( "svg#sample" )
+				.style("height", 150 * this.value + "px")
+				.style("width" , 150 * this.value + "px");
 		});
 }
 
@@ -45,6 +72,7 @@ function setStrokeWidthInputListener()
 				.attr({
 					"stroke-width" : this.value
 				});
+			d3.selectAll( ".range-output" )[0][1].textContent = Number(this.value).toFixed(1) + " px" ;
 		});
 }
 
@@ -65,7 +93,8 @@ function growSquareInside(level, firstPoints)
 	}
 }
 
-/* x点の座標をもらってきて、そこから x角形を作成する */
+/** x点の座標をもらってきて、そこから x角形を作成する
+	@param pointsArray : [x, y] の座標が複数格納された二次元配列 */
 function createSquare(pointsArray)
 {
 	var svgField = d3.select("svg#sample");
@@ -94,7 +123,7 @@ function createSquare(pointsArray)
 			"stroke-linejoin"  : "round", // 頂点を丸める
 		});
 
-	/* だんだん大きくなる */
+	// だんだん大きくなるアニメーション
 	path.transition()
 		.duration(1400)
 		.attr({
@@ -102,10 +131,11 @@ function createSquare(pointsArray)
 		});
 }
 
-/* 内側に x角形を作るための次の四点を計算する */
-function calculateNextPoints(pointsArray)
+/** 内側に x角形を作るための次の四点を計算する
+	@param previousPoints : 新しく作る図形の一個前の図形の座標たち */
+function calculateNextPoints(previousPoints)
 {
-	var vertices = pointsArray.length;
+	var vertices = previousPoints.length;
 	var nextPoints = [];
 
 	for ( var i = 0; i < vertices; ++i )
@@ -115,8 +145,8 @@ function calculateNextPoints(pointsArray)
 		{
 			iNext = 0;
 		}
-		var xNext = ( pointsArray[ i ][ 0 ] + pointsArray[ iNext ][ 0 ] ) / 2;
-		var yNext = ( pointsArray[ i ][ 1 ] + pointsArray[ iNext ][ 1 ] ) / 2;
+		var xNext = ( previousPoints[ i ][ 0 ] + previousPoints[ iNext ][ 0 ] ) / 2;
+		var yNext = ( previousPoints[ i ][ 1 ] + previousPoints[ iNext ][ 1 ] ) / 2;
 		nextPoints.push( [ xNext, yNext ] );
 	}
 

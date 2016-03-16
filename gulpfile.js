@@ -64,6 +64,7 @@ gulp.task('copy', function(cb) {
 gulp.task('babel', function() {
 	gulp.src('./source/es6/**/*.es6')
 		.pipe(babel())
+		.on('error', console.error.bind(console))
 		.pipe(gulp.dest('./source/'));
 });
 

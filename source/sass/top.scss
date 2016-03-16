@@ -28,19 +28,28 @@ button#grow-button {
 	@include button-template($light-green, $dark-green);
 }
 
-svg#sample {
+button#init-button {
+	@include button-template(#bf3434, #4b1717);
+}
+
+.svg-field-frame {
 	width        : 800px;
 	height       : 500px;
 	margin       : 20px;
 	padding      : 30px;
+	overflow     : auto;
 	border       : 4px solid #6b6560;
 	border-radius: 6px;
+}
+
+svg#sample {
+	display      : block;
 }
 
 .range-input-box {
 	display      : table;
 	width        : 800px;
-	margin       : 0px 20px 8px;
+	margin       : 0 20px 8px;
 	background   : #cde2bb;
 	border-bottom: 3px solid $dark-green;
 	border-right : 5px solid $dark-green;

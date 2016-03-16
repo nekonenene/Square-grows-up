@@ -64,6 +64,7 @@ button#grow-button {
   display: inline-block;
   height: 32px;
   margin: 8px 0;
+  margin-right: 8px;
   padding: 0 25.6px;
   background: #1faa1c;
   color: #ffffff;
@@ -84,18 +85,47 @@ button#grow-button {
   button#grow-button:hover {
     background: #1d7737; }
 
-svg#sample {
+button#init-button {
+  display: inline-block;
+  height: 32px;
+  margin: 8px 0;
+  margin-right: 8px;
+  padding: 0 25.6px;
+  background: #bf3434;
+  color: #ffffff;
+  border: 0;
+  border-radius: 3px;
+  box-shadow: none;
+  -webkit-transition-property: background;
+          transition-property: background;
+  -webkit-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+  line-height: 32px;
+  font-family: "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "Helvetica Neue", Helvetica, Arial, Roboto, "Droid Sans", "游ゴシック", YuGothic, sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  text-align: center;
+  text-shadow: none;
+  text-decoration: none; }
+  button#init-button:hover {
+    background: #4b1717; }
+
+.svg-field-frame {
   width: 800px;
   height: 500px;
   margin: 20px;
   padding: 30px;
+  overflow: auto;
   border: 4px solid #6b6560;
   border-radius: 6px; }
+
+svg#sample {
+  display: block; }
 
 .range-input-box {
   display: table;
   width: 800px;
-  margin: 0px 20px 8px;
+  margin: 0 20px 8px;
   background: #cde2bb;
   border-bottom: 3px solid #1d7737;
   border-right: 5px solid #1d7737;
