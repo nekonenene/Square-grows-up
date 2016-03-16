@@ -3,6 +3,7 @@
 body {
 	margin          : 0;
 	padding         : 0;
+	color           : #131c16;
 	background-color: #f2faff;
 	font-family     : $gothic;
 	font-size       : 17px;
@@ -16,7 +17,7 @@ p {
 
 svg#sample {
 	width        : 800px;
-	height       : 400px;
+	height       : 500px;
 	margin       : 20px 50px;
 	padding      : 30px;
 	border       : 4px solid #6b6560;
@@ -51,8 +52,56 @@ svg#sample {
 	}
 }
 
+@mixin range-template($primary, $bar-height) {
+	$grey: #95a291;
+
+	width        : 40%;
+	height       : $bar-height;
+	margin       : 0;
+	padding      : 0;
+	background   : $primary;
+	border       : 0;
+	border-radius: $bar-height;
+	appearance   : none;
+	outline      : none;
+	cursor       : pointer;
+	&:focus {
+		outline: none;
+	}
+	&::-moz-range-track {
+		border       : inherit;
+		background   : transparent;
+		border-top   : 2em solid transparent;
+		border-bottom: 2em solid transparent;
+	}
+	&::-ms-track {
+		border    : inherit;
+		color     : transparent;
+		/* don't drawn vertical reference line */
+		background: transparent;
+	}
+	&::-ms-fill-lower,
+	&::-ms-fill-upper {
+		background: transparent;
+	}
+	&::-ms-tooltip {
+		display: none;
+	}
+	&::-ms-thumb {
+		width        : $bar-height;
+		height       : $bar-height;
+		border       : 0;
+		border-radius: 50%;
+		background   : radial-gradient(circle, white 0% , $grey 90% , $grey 100%);
+	}
+}
+
 button#grow-button {
 	@include button-template(#00b233, #1d7737);
+}
+
+input[type="range"] {
+	@include range-template(#1faa1c, 1em);
 }
 
 // テキストの調整 small, big など

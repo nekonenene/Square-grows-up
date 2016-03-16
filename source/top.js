@@ -1,17 +1,44 @@
 window.addEventListener("load", function () {
+	"use strict";
 
-	var points = [[10, 10], [130, 10], [130, 130], [10, 130]];
+	d3.selectAll("input#zoom-level")[0][0].value = 1;
+	d3.selectAll("input#stroke-width-level")[0][0].value = 2.5;
+
+	var xx = 10;var yy = 130;
+	var points = [[xx, xx], [yy, xx], [yy, yy], [xx, yy]];
 	createSquare(points);
+	var level = 1;
 
-	for (var i = 0; i < 6; ++i) {
+	d3.select("button#grow-button").on("click", function () {
+		// growSquareInside(level++);
+		points = calculateNextPoints(points);
+		createSquare(points);
+	});
+
+	d3.select("input#zoom-level").on("change", function () {
+		console.log("zoom-level : " + this.value);
+		d3.select("svg#sample").selectAll("path").attr({
+			"transform": "translate(0, 0) scale(" + this.value + ")"
+		});
+	});
+
+	d3.select("input#stroke-width-level").on("change", function () {
+		d3.select("svg#sample").selectAll("path").attr({
+			"stroke-width": this.value
+		});
+	});
+}, false);
+
+/* 成長させるボタンを押した時の反応 */
+function growSquareInside(level, firstPoints) {
+	var svgField = d3.select("svg#sample").selectAll("path").remove();
+
+	var points = firstPoints.concat();
+	for (var i = 0; i < level; ++i) {
 		points = calculateNextPoints(points);
 		createSquare(points);
 	}
-
-	var svgField = d3.select("svg#sample").attr({
-		"transform": "scale(1) translate(80, 80)"
-	});
-}, false);
+}
 
 /* x点の座標をもらってきて、そこから x角形を作成する */
 function createSquare(pointsArray) {
@@ -25,27 +52,32 @@ function createSquare(pointsArray) {
 
 	/* path の SVG については難しいので、以下でオプションを参照のこと
   * http://www.h2.dion.ne.jp/~defghi/svgMemo/svgMemo_03.htm */
+
+	var zoomLevel = d3.selectAll("input#zoom-level")[0][0].value;
+	var strokeWidthLevel = d3.selectAll("input#stroke-width-level")[0][0].value;
+	var centerAdjust = 60 * zoomLevel;
+
 	var path = svgField.append("path").attr({
 		"d": lineFunction(pointsArray) + "z", // z オプションによって図形は閉じられる
 		"stroke": "#3e3833",
-		"stroke-width": 2.5,
+		"stroke-width": strokeWidthLevel,
 		"fill": "none",
 		"shape-rendering": "auto", // アンチエイリアス設定
-		"transform": "scale(0.1)",
+		"transform": "translate(" + centerAdjust + ", " + centerAdjust + ") scale(0.1)",
 		"stroke-linejoin": "round" });
 
 	/* だんだん大きくなる */
 	// 頂点を丸める
 	path.transition().duration(1400).attr({
-		"transform": "translate(-60,-60) scale(2)"
+		"transform": "translate(0, 0) scale(" + zoomLevel + ")"
 	});
 }
 
 /* 内側に x角形を作るための次の四点を計算する */
 function calculateNextPoints(pointsArray) {
 	var vertices = pointsArray.length;
-
 	var nextPoints = [];
+
 	for (var i = 0; i < vertices; ++i) {
 		var iNext = i + 1;
 		if (i === vertices - 1) {
