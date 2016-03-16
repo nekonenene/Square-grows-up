@@ -80,7 +80,7 @@ gulp.task('haml', function() {
 	gulp.src('./source/haml/**/*.haml')
 		.pipe(haml({
             doubleQuote: true,
-            encodings  : "UTF-8"
+            encodings  : 'UTF-8'
         }).on('error', function(e) { console.log(e.message); }))
 		.pipe(gulp.dest('./source/'));
 });

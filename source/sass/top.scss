@@ -1,58 +1,58 @@
 @import "./regular_design.scss";
 
 body {
-  margin     : 0;
-  padding    : 0;
-  background-color: #f2faff;
-  font-family: $gothic;
-  font-size  : 17px;
+	margin          : 0;
+	padding         : 0;
+	background-color: #f2faff;
+	font-family     : $gothic;
+	font-size       : 17px;
 }
 
 p {
-  margin        : 10px 26px 8px;
-  letter-spacing: 0.06em;
-  font-size     : 100%;
+	margin        : 10px 26px 8px;
+	letter-spacing: 0.06em;
+	font-size     : 100%;
 }
 
 svg#sample {
-  width        : 800px;
-  height       : 400px;
-  margin       : 20px 50px;
-  padding      : 30px;
-  border       : 4px solid #6b6560;
-  border-radius: 6px;
+	width        : 800px;
+	height       : 400px;
+	margin       : 20px 50px;
+	padding      : 30px;
+	border       : 4px solid #6b6560;
+	border-radius: 6px;
 }
 
 @mixin button-template($bg-color, $bg-hover-color) {
-  display            : inline-block;
-  height             : 32px;
-  margin             : 8px 0;
-  padding            : 0 25.6px;
-  background         : $bg-color;
-  color              : #ffffff;
-  border             : 0;
-  border-radius      : 3px;
-  box-shadow         : none;
-  transition-property: background;
-  transition-duration: 0.3s;
-  line-height        : 32px;
-  font               : {
-    family: $gothic;
-    size  : 14px;
-    weight: 300;
-  }
-  text               : {
-    align     : center;
-    shadow    : none;
-    decoration: none;
-  }
-  &:hover {
-    background: $bg-hover-color;
-  }
+	display            : inline-block;
+	height             : 32px;
+	margin             : 8px 0;
+	padding            : 0 25.6px;
+	background         : $bg-color;
+	color              : #ffffff;
+	border             : 0;
+	border-radius      : 3px;
+	box-shadow         : none;
+	transition-property: background;
+	transition-duration: 0.3s;
+	line-height        : 32px;
+	font               : {
+		family: $gothic;
+		size  : 14px;
+		weight: 300;
+	}
+	text               : {
+		align     : center;
+		shadow    : none;
+		decoration: none;
+	}
+	&:hover {
+		background: $bg-hover-color;
+	}
 }
 
 button#grow-button {
-  @include button-template(#00b233, #1d7737);
+	@include button-template(#00b233, #1d7737);
 }
 
 // テキストの調整 small, big など
