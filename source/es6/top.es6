@@ -5,8 +5,8 @@ window.addEventListener("load", function ()
 	setZoomInputListener();
 	setStrokeWidthInputListener();
 
-	growOuterSquare(4, undefined, 0.5);
-
+	growOuterSquare(5, undefined, 0.5);
+	
 }, false);
 
 function growOuterSquare(_vertices, _r, _reducingLevel)

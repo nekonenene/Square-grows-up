@@ -11,7 +11,7 @@ window.addEventListener("load", function () {
 	setZoomInputListener();
 	setStrokeWidthInputListener();
 
-	growOuterSquare(4, undefined, 0.5);
+	growOuterSquare(5, undefined, 0.5);
 }, false);
 
 function growOuterSquare(_vertices, _r, _reducingLevel) {
@@ -52,7 +52,7 @@ function growOuterSquare(_vertices, _r, _reducingLevel) {
 		deleteAllPath();
 		vertices = d3.selectAll("input#vertices")[0][0].value;
 
-		firstAngle = initialPolygon.firstAngle;
+		firstAngle = PreviousPolygon.verticesAngle(vertices) / 2;
 		r = initialPolygon.r;
 		points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
 		createPolygon(points);
@@ -182,7 +182,7 @@ function setStrokeWidthInputListener() {
 		d3.select("svg#sample").selectAll("path").attr({
 			"stroke-width": this.value
 		});
-		d3.selectAll("#stroke-width-level-output")[0][1].textContent = Number(this.value).toFixed(1) + " px";
+		d3.selectAll("#stroke-width-level-output")[0][0].textContent = Number(this.value).toFixed(1) + " px";
 	});
 }
 
