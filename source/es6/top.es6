@@ -49,7 +49,7 @@ function growOuterSquare(_vertices, _r, _reducingLevel)
 			deleteAllPath();
 			vertices = d3.selectAll( "input#vertices" )[0][0].value;
 
-			firstAngle = initialPolygon.firstAngle;
+			firstAngle = PreviousPolygon.verticesAngle(vertices) / 2;
 			r          = initialPolygon.r;
 			points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
 			createPolygon(points);
