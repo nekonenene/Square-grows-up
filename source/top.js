@@ -94,8 +94,8 @@ function createOuterRegularPolygons(_previousPolygons, _vertices, _firstAngle, _
 	for (var i = 0; i < ppCopy.length; ++i) {
 		for (var j = 0; j < _vertices; ++j) {
 			var jNext = j !== _vertices - 1 ? j + 1 : 0;
-			var centerX = ((ppCopy[i].points[j][0] + ppCopy[i].points[jNext][0]) / 2 - ppCopy[i].centerPoint[0]) * (3 / 2) + ppCopy[i].centerPoint[0];
-			var centerY = ((ppCopy[i].points[j][1] + ppCopy[i].points[jNext][1]) / 2 - ppCopy[i].centerPoint[1]) * (3 / 2) + ppCopy[i].centerPoint[1];
+			var centerX = (1.5 * (ppCopy[i].points[j][0] + ppCopy[i].points[jNext][0]) - ppCopy[i].centerPoint[0]) / 2;
+			var centerY = (1.5 * (ppCopy[i].points[j][1] + ppCopy[i].points[jNext][1]) - ppCopy[i].centerPoint[1]) / 2;
 			var centerPoint = [centerX, centerY];
 			var points = calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, centerPoint, _zoomLevel);
 			createPolygon(points);
@@ -118,8 +118,9 @@ function calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, _centerPoint
 	var points = [];
 
 	for (var i = 0; i < _vertices; ++i) {
-		var x = _r * Math.cos((_firstAngle + i * dividedAngle) / 180 * Math.PI);
-		var y = _r * Math.sin((_firstAngle + i * dividedAngle) / 180 * Math.PI);
+		var angleRadian = (_firstAngle + i * dividedAngle) / 180 * Math.PI;
+		var x = _r * Math.cos(angleRadian);
+		var y = _r * Math.sin(angleRadian);
 
 		x += _centerPoint[0];y += _centerPoint[1];
 		x *= _zoomLevel;y *= _zoomLevel;
