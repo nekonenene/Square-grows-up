@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang=ja>
+<head>
+<meta charset=utf-8>
+<meta content="IE=edge"http-equiv=X-UA-Compatible>
+<meta content="width=device-width,initial-scale=1"name=viewport>
+<meta content=""name=description>
+<meta content=""name=keywords>
+<meta content=nekonenene name=author>
+<link href=./img/favicon.ico rel="shortcut icon">
+<meta content=#2b0de8 name=theme-color>
+<link href=./img/favicon_192.png rel=icon sizes=192x192>
+<title>せいほうけい育成日記</title>
+<link href=./top.css rel=stylesheet>
+<!--[if lt IE 9]><script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+<script src=http://d3js.org/d3.v3.min.js></script>
+<script>window.d3 || document.write('<script src="./plugins/d3.js"><\/script>')</script>
+<script src=./top.js></script>
+</head>
+<body>
+<div id=site-box>
+<div id=site-main>
+<h1>正方形を育てよう！</h1>
+<div id=content>
+<p>
+エサをあげてください。<br><button id=inner-grow-button type=button>成長させる</button>
+<button id=outer-grow-button type=button>なかまをよぶ</button>
+<button id=init-button type=button>さいしょから</button>
+</p>
+<div class=svg-field-frame>
+<svg id=sample></svg>
+</div>
+<div class=slidebars>
+<div class=range-input-box>
+<div class=range-title>
+<p>zoom</p>
+</div>
+<div class=range-input>
+<input id=zoom-level max=15 min=0.3 step=0.1 type=range value=1>
+</div>
+<div class=range-output>
+<p id=zoom-level-output>x.x 倍</p>
+</div>
+</div>
+<div class=range-input-box>
+<div class=range-title>
+<p>線幅</p>
+</div>
+<div class=range-input>
+<input id=stroke-width-level max=8 min=0.1 step=0.1 type=range>
+</div>
+<div class=range-output>
+<p id=stroke-width-level-output>x.x px</p>
+</div>
+</div>
+<div class=range-input-box>
+<div class=range-title>
+<p>なかま</p>
+</div>
+<div class=range-input>
+<input id=reducing-level max=1 min=0.01 step=0.01 type=range>
+</div>
+<div class=range-output>
+<p id=reducing-level-output>x.xx 倍</p>
+</div>
+</div>
+<div class="range-input-box after-init">
+<div class=range-title>
+<p>図形</p>
+</div>
+<div class=range-input>
+<input id=vertices max=36 min=3 step=1 type=range>
+</div>
+<div class=range-output>
+<p id=vertices-output>正 x角形</p>
+</div>
+</div>
+<p class=caution>※『図形』の項目は、初心に戻ったときに反映されます</p>
+</div>
+<p>
+意外とSVGの描画に関しては Internet Explorer が安定しています。<br>試せてないけど Edge もいいかも？
+</p>
+</div>
+</div>
+<div id=footer>
+<a href=http://nekonenene.hatenablog.com/ target=_blank title=ハトネコエWebがくしゅうちょう>制作：ハトネコエ</a>
+</div>
+</div>
+</body>
+</html>
