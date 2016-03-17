@@ -22,7 +22,7 @@ var webServer = require('gulp-webserver');
 
 
 /* gulp とコマンドを打つと実行される */
-gulp.task('default', ['copy', 'webServer', 'watch', 'compile'] );
+gulp.task('default', ['copy', 'server', 'watch', 'compile'] );
 
 /* watch 系まとめ : gulp watch */
 gulp.task('watch', function() {
@@ -36,7 +36,7 @@ gulp.task('watch', function() {
 
 
 /* Live Reload!! */
-gulp.task('webServer', function() {
+gulp.task('server', function() {
 	gulp.src('./optimized/')
 		.pipe(webServer({
 			port             : 8013,
