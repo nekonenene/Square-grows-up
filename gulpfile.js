@@ -22,7 +22,7 @@ var webServer = require('gulp-webserver');
 
 
 /* gulp とコマンドを打つと実行される */
-gulp.task('default', ['copy', 'server', 'watch', 'compile'] );
+gulp.task('default', ['copy', 'compile', 'minify', 'server', 'watch'] );
 
 /* watch 系まとめ : gulp watch */
 gulp.task('watch', function() {
@@ -97,6 +97,7 @@ gulp.task('copyHtml', function() {
 /* **********
  *  Minify 系 : ファイルの圧縮
  **********   */
+gulp.task('minify', ['jsMinify', 'cssMinify', 'htmlMinify', 'imageMinify']);
 gulp.task('codeMinify', ['jsMinify', 'cssMinify', 'htmlMinify']);
 
 /* JavaScript Min */
