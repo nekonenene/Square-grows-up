@@ -16,25 +16,29 @@ function growOuterSquare() {
 	var vertices = 5;
 	var firstRadius = 100; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
 	var points = [];
-	this.previousPolygons = [];
+	var previousPolygons = [];
 
 	points = calculateRegularPolygonsPoints(vertices, 54, firstRadius, 150, 150, 1);
 	createSquare(points);
 
-	d3.select("button#grow-button").on("click", function () {
+	d3.select("button#inner-grow-button").on("click", function () {
 		// growSquareInside(level++);
-		points = calculateNextPoints(points);
+		points = calculateNextInnerPoints(points);
+		createSquare(points);
+	});
+
+	d3.select("button#grow-button").on("click", function () {
 		createSquare(points);
 	});
 }
 
-var PreviousPolygon = function PreviousPolygon() {
+var PreviousPolygon = function PreviousPolygon(_points, _centerPoint, _r, _firstAngle) {
 	_classCallCheck(this, PreviousPolygon);
 
-	this.points = [];
-	this.centerPoint = [0, 0];
-	this.r = 100;
-	this.firstAngle = 0;
+	this.points = _points;
+	this.centerPoint = _centerPoint;
+	this.r = _r;
+	this.firstAngle = _firstAngle;
 };
 
 /** 正多角形をPATHで描くために必要な座標群を計算する
@@ -47,18 +51,17 @@ var PreviousPolygon = function PreviousPolygon() {
 	*/
 
 
-function calculateRegularPolygonsPoints(vertices, firstAngle, r, centerX, centerY, zoomLevel) {
-	var dividedAngle = 360 / vertices;
+function calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, _centerX, _centerY, _zoomLevel) {
+	var dividedAngle = 360 / _vertices;
 	var verticesAngle = 180 - dividedAngle; // 頂点の角度
 	var points = [];
 
-	for (var i = 0; i < vertices; ++i) {
-		var x = r * Math.cos((firstAngle + i * dividedAngle) / 180 * Math.PI);
-		var y = r * Math.sin((firstAngle + i * dividedAngle) / 180 * Math.PI);
+	for (var i = 0; i < _vertices; ++i) {
+		var x = _r * Math.cos((_firstAngle + i * dividedAngle) / 180 * Math.PI);
+		var y = _r * Math.sin((_firstAngle + i * dividedAngle) / 180 * Math.PI);
 
-		x += centerX;y += centerY;
-		x *= zoomLevel;y *= zoomLevel;
-		console.log(x + " x|y " + y);
+		x += _centerX;y += _centerY;
+		x *= _zoomLevel;y *= _zoomLevel;
 		points.push([x, y]);
 	}
 	return points;
@@ -73,7 +76,7 @@ function growInnerSquare() {
 
 	d3.select("button#grow-button").on("click", function () {
 		// growSquareInside(level++);
-		points = calculateNextPoints(points);
+		points = calculateNextInnerPoints(points);
 		createSquare(points);
 	});
 
@@ -91,11 +94,11 @@ function deleteAllPath() {
 }
 
 /** スライドバーのトグルの位置と、現在値の表示を初期化 */
-function initRangeInput(defaultZoom, defaultStrokeWidth) {
-	d3.selectAll("input#zoom-level")[0][0].value = defaultZoom;
-	d3.selectAll("input#stroke-width-level")[0][0].value = defaultStrokeWidth;
-	d3.selectAll(".range-output")[0][0].textContent = defaultZoom.toFixed(1) + " 倍";
-	d3.selectAll(".range-output")[0][1].textContent = defaultStrokeWidth.toFixed(1) + " px";
+function initRangeInput(_defaultZoom, _defaultStrokeWidth) {
+	d3.selectAll("input#zoom-level")[0][0].value = _defaultZoom;
+	d3.selectAll("input#stroke-width-level")[0][0].value = _defaultStrokeWidth;
+	d3.selectAll(".range-output")[0][0].textContent = _defaultZoom.toFixed(1) + " 倍";
+	d3.selectAll(".range-output")[0][1].textContent = _defaultStrokeWidth.toFixed(1) + " px";
 }
 
 /** 「zoom」のスライダーに対してリスナー設定 */
@@ -125,14 +128,14 @@ function setStrokeWidthInputListener() {
 }
 
 /** x点の座標をもらってきて、そこから x角形を作成する
-	@param pointsArray : [x, y] の座標が複数格納された二次元配列 */
-function createSquare(pointsArray) {
+	@param points : [x, y] の座標が複数格納された二次元配列 */
+function createSquare(_points) {
 	var svgField = d3.select("svg#sample");
 
 	var lineFunction = d3.svg.line().x(function (d, i) {
-		return pointsArray[i][0];
+		return _points[i][0];
 	}).y(function (d, i) {
-		return pointsArray[i][1];
+		return _points[i][1];
 	}).interpolate("linear");
 
 	/* path の SVG については難しいので、以下でオプションを参照のこと
@@ -143,7 +146,7 @@ function createSquare(pointsArray) {
 	var centerAdjust = 60 * zoomLevel;
 
 	var path = svgField.append("path").attr({
-		"d": lineFunction(pointsArray) + "z", // z オプションによって図形は閉じられる
+		"d": lineFunction(_points) + "z", // z オプションによって図形は閉じられる
 		"stroke": "#3e3833",
 		"stroke-width": strokeWidthLevel,
 		"fill": "none",
@@ -160,8 +163,8 @@ function createSquare(pointsArray) {
 
 /** 内側に x角形を作るための次の四点を計算する
 	@param previousPoints : 新しく作る図形の一個前の図形の座標たち */
-function calculateNextPoints(previousPoints) {
-	var vertices = previousPoints.length;
+function calculateNextInnerPoints(_previousPoints) {
+	var vertices = _previousPoints.length;
 	var nextPoints = [];
 
 	for (var i = 0; i < vertices; ++i) {
@@ -169,8 +172,8 @@ function calculateNextPoints(previousPoints) {
 		if (i === vertices - 1) {
 			iNext = 0;
 		}
-		var xNext = (previousPoints[i][0] + previousPoints[iNext][0]) / 2;
-		var yNext = (previousPoints[i][1] + previousPoints[iNext][1]) / 2;
+		var xNext = (_previousPoints[i][0] + _previousPoints[iNext][0]) / 2;
+		var yNext = (_previousPoints[i][1] + _previousPoints[iNext][1]) / 2;
 		nextPoints.push([xNext, yNext]);
 	}
 
