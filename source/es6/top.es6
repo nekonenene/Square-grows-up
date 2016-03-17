@@ -4,8 +4,53 @@ window.addEventListener("load", function () {
 	setZoomInputListener();
 	setStrokeWidthInputListener();
 
-	growInnerSquare();
+	growOuterSquare();
 }, false);
+
+
+function growOuterSquare()
+{
+	var vertices = 5;
+	var firstRadius = 100; // 2で割られていくので、2の階乗の値がもっとも良い
+	var points = [];
+
+	points = calculateRegularPolygonsPoints(vertices, 54, firstRadius, 150, 150, 1);
+	createSquare(points);
+
+	d3.select( "button#grow-button" )
+		.on("click", function(){
+			// growSquareInside(level++);
+			points = calculateNextPoints( points );
+			createSquare( points );
+		});
+}
+
+/** 正多角形をPATHで描くために必要な座標群を計算する
+ 	@param vertices   : 頂点数、正X角形のX
+	@param firstAngle : x軸と水平を0としたときの、最初の座標の傾き
+	@param r          : 正多角形を引く基準とする円の半径
+	@param centerX    : 基準とする円の x 座標
+	@param centerY    : 基準とする円の y 座標
+	@param zoomLevel  : 拡大率、よって実際の基準とする円の半径は r * zoomLevel となる
+	*/
+function calculateRegularPolygonsPoints(vertices, firstAngle, r, centerX, centerY, zoomLevel)
+{
+	var dividedAngle  = 360 / vertices;
+	var verticesAngle = 180 - dividedAngle; // 頂点の角度
+	var points = [];
+
+	for(var i = 0; i < vertices; ++i)
+	{
+		var x = r * Math.cos( ( firstAngle + i * dividedAngle ) / 180 * Math.PI );
+		var y = r * Math.sin( ( firstAngle + i * dividedAngle ) / 180 * Math.PI );
+
+		x += centerX;   y += centerY;
+		x *= zoomLevel; y *= zoomLevel;
+		console.log(x + " x|y " + y );
+		points.push([x, y]);
+	}
+	return points;
+}
 
 /** 四角の中に四角をどんどん作っていく */
 function growInnerSquare()
@@ -24,7 +69,7 @@ function growInnerSquare()
 
 	d3.select( "button#init-button" )
 		.on("click", function(){
-			deleteAll();
+			deleteAllPath();
 			points = [ [xx, xx], [yy, xx], [yy, yy], [xx, yy] ];
 			createSquare(points);
 			var level = 1;
@@ -32,7 +77,7 @@ function growInnerSquare()
 }
 
 /** PATH を全て除去 */
-function deleteAll() {
+function deleteAllPath() {
 	var svgField = d3.select( "svg#sample" )
 		.selectAll("path")
 		.remove();
@@ -59,9 +104,11 @@ function setZoomInputListener()
 				});
 			d3.selectAll( ".range-output" )[0][0].textContent = Number(this.value).toFixed(1) + " 倍" ;
 			// TODO: ここの 150 はマジックナンバーなので、SVGのサイズに直したい
+			/*
 			d3.selectAll( "svg#sample" )
 				.style("height", 150 * this.value + "px")
 				.style("width" , 150 * this.value + "px");
+			*/
 		});
 }
 
@@ -77,23 +124,6 @@ function setStrokeWidthInputListener()
 				});
 			d3.selectAll( ".range-output" )[0][1].textContent = Number(this.value).toFixed(1) + " px" ;
 		});
-}
-
-/** 「成長させる」ボタンを押した時の反応
-	@param level : 成長段階（1～）
-	@param firstPoints : level=1 のときの座標配列 */
-function growSquareInside(level, firstPoints)
-{
-	var svgField = d3.select( "svg#sample" )
-		.selectAll("path")
-		.remove();
-
-	var points = firstPoints.concat();
-	for ( var i = 0; i < level; ++i )
-	{
-		points = calculateNextPoints( points );
-		createSquare( points );
-	}
 }
 
 /** x点の座標をもらってきて、そこから x角形を作成する
