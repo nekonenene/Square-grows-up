@@ -11,8 +11,9 @@ window.addEventListener("load", function () {
 function growOuterSquare()
 {
 	var vertices = 5;
-	var firstRadius = 100; // 2で割られていくので、2の階乗の値がもっとも良い
+	var firstRadius = 100; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
 	var points = [];
+	this.previousPolygons = [];
 
 	points = calculateRegularPolygonsPoints(vertices, 54, firstRadius, 150, 150, 1);
 	createSquare(points);
@@ -23,6 +24,15 @@ function growOuterSquare()
 			points = calculateNextPoints( points );
 			createSquare( points );
 		});
+}
+
+class PreviousPolygon {
+	constructor(){
+		this.points = [];
+		this.centerPoint = [0, 0];
+		this.r = 100;
+		this.firstAngle = 0;
+	}
 }
 
 /** 正多角形をPATHで描くために必要な座標群を計算する

@@ -1,3 +1,7 @@
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 window.addEventListener("load", function () {
 	"use strict";
 
@@ -10,8 +14,9 @@ window.addEventListener("load", function () {
 
 function growOuterSquare() {
 	var vertices = 5;
-	var firstRadius = 100; // 2で割られていくので、2の階乗の値がもっとも良い
+	var firstRadius = 100; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
 	var points = [];
+	this.previousPolygons = [];
 
 	points = calculateRegularPolygonsPoints(vertices, 54, firstRadius, 150, 150, 1);
 	createSquare(points);
@@ -23,6 +28,15 @@ function growOuterSquare() {
 	});
 }
 
+var PreviousPolygon = function PreviousPolygon() {
+	_classCallCheck(this, PreviousPolygon);
+
+	this.points = [];
+	this.centerPoint = [0, 0];
+	this.r = 100;
+	this.firstAngle = 0;
+};
+
 /** 正多角形をPATHで描くために必要な座標群を計算する
  	@param vertices   : 頂点数、正X角形のX
 	@param firstAngle : x軸と水平を0としたときの、最初の座標の傾き
@@ -31,6 +45,8 @@ function growOuterSquare() {
 	@param centerY    : 基準とする円の y 座標
 	@param zoomLevel  : 拡大率、よって実際の基準とする円の半径は r * zoomLevel となる
 	*/
+
+
 function calculateRegularPolygonsPoints(vertices, firstAngle, r, centerX, centerY, zoomLevel) {
 	var dividedAngle = 360 / vertices;
 	var verticesAngle = 180 - dividedAngle; // 頂点の角度

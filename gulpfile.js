@@ -63,7 +63,9 @@ gulp.task('copy', function(cb) {
 /* JS Babel : ES6への対応 */
 gulp.task('babel', function() {
 	gulp.src('./source/es6/**/*.es6')
-		.pipe(babel())
+		.pipe(babel({
+			presets: ['es2015']
+		}))
 		.on('error', console.error.bind(console))
 		.pipe(gulp.dest('./source/'));
 });
