@@ -60,7 +60,7 @@ p {
   font-size: 100%;
   letter-spacing: 0.06em; }
 
-button#grow-button {
+button#inner-grow-button {
   display: inline-block;
   height: 32px;
   margin: 8px 0;
@@ -82,8 +82,33 @@ button#grow-button {
   text-align: center;
   text-shadow: none;
   text-decoration: none; }
-  button#grow-button:hover {
+  button#inner-grow-button:hover {
     background: #1d7737; }
+
+button#outer-grow-button {
+  display: inline-block;
+  height: 32px;
+  margin: 8px 0;
+  margin-right: 8px;
+  padding: 0 25.6px;
+  background: #d98310;
+  color: #ffffff;
+  border: 0;
+  border-radius: 3px;
+  box-shadow: none;
+  -webkit-transition-property: background;
+          transition-property: background;
+  -webkit-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+  line-height: 32px;
+  font-family: "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "Helvetica Neue", Helvetica, Arial, Roboto, "Droid Sans", "游ゴシック", YuGothic, sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  text-align: center;
+  text-shadow: none;
+  text-decoration: none; }
+  button#outer-grow-button:hover {
+    background: #613d0d; }
 
 button#init-button {
   display: inline-block;

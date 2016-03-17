@@ -20,14 +20,13 @@ function growOuterSquare(_vertices, _r, _reducingLevel)
 	var r = _r || 80; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
 	var centerPoint = [3 * r, 2.5 * r];
 	var reducingLevel = _reducingLevel || 0.5; // 子供の正多角形の親に対しての大きさ
-	var previousPolygons = [];
 
 	points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
 	createPolygon(points);
 
 	var initialPolygon = new PreviousPolygon(points, firstAngle, r, centerPoint);
-	previousPolygons.push( initialPolygon );
-	
+	var previousPolygons = [ initialPolygon ];
+
 	d3.select( "button#inner-grow-button" )
 		.on("click", function(){
 			// growSquareInside(level++);
@@ -35,7 +34,7 @@ function growOuterSquare(_vertices, _r, _reducingLevel)
 			createPolygon( points );
 		});
 
-	d3.select( "button#grow-button" )
+	d3.select( "button#outer-grow-button" )
 		.on("click", function(){
 			r *= reducingLevel;
 			if( vertices % 2 === 1){ firstAngle += 180; }
@@ -47,10 +46,8 @@ function growOuterSquare(_vertices, _r, _reducingLevel)
 	.on("click", function(){
 		deleteAllPath();
 		firstAngle = initialPolygon.firstAngle;
-		r = initialPolygon.r;
-
-		points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
-		createPolygon(points);
+		r          = initialPolygon.r;
+		createPolygon(initialPolygon.points);
 		previousPolygons = [ initialPolygon ];
 	});
 }

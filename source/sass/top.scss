@@ -24,8 +24,12 @@ p {
 	letter-spacing: 0.06em;
 }
 
-button#grow-button {
+button#inner-grow-button {
 	@include button-template($light-green, $dark-green);
+}
+
+button#outer-grow-button {
+	@include button-template(#d98310, #613d0d);
 }
 
 button#init-button {
