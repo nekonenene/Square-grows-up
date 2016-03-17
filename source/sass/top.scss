@@ -52,14 +52,23 @@ svg#sample {
 	height       : 100%;
 }
 
+div .slidebars {
+	width  : 800px;
+	margin : 10px 20px 20px;
+}
+
 .range-input-box {
 	display      : table;
-	width        : 800px;
-	margin       : 0 20px 8px;
+	width        : 100%;
+	margin       : 0 0 8px;
 	background   : #cde2bb;
 	border-bottom: 3px solid $dark-green;
 	border-right : 5px solid $dark-green;
 	border-radius: 2em;
+
+	&.after-init {
+		background: #f0c5bc;
+	}
 }
 
 .range-title, .range-input, .range-output {
@@ -75,6 +84,14 @@ svg#sample {
 .range-output {
 	width: 8em;
 	padding-left: 2em;
+}
+
+.caution {
+	margin-top     : 10px;
+	color          : #7c061a;
+	font-size      : 82%;
+	text-align     : right;
+	text-decoration: underline;
 }
 
 input[type="range"] {

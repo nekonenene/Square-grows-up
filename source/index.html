@@ -36,7 +36,7 @@
           <div class="svg-field-frame">
             <svg id="sample"></svg>
           </div>
-          <div class="zoom">
+          <div class="slidebars">
             <div class="range-input-box">
               <div class="range-title">
                 <p>zoom</p>
@@ -45,7 +45,7 @@
                 <input id="zoom-level" max="15" min="0.3" step="0.1" type="range" value="1">
               </div>
               <div class="range-output">
-                <p>xxx 倍</p>
+                <p id="zoom-level-output">x.x 倍</p>
               </div>
             </div>
             <div class="range-input-box">
@@ -56,10 +56,36 @@
                 <input id="stroke-width-level" max="8" min="0.1" step="0.1" type="range">
               </div>
               <div class="range-output">
-                <p>xxx px</p>
+                <p id="stroke-width-level-output">x.x px</p>
               </div>
             </div>
+            <div class="range-input-box">
+              <div class="range-title">
+                <p>なかま</p>
+              </div>
+              <div class="range-input">
+                <input id="reducing-level" max="1" min="0.01" step="0.01" type="range">
+              </div>
+              <div class="range-output">
+                <p id="reducing-level-output">x.xx 倍</p>
+              </div>
+            </div>
+            <div class="range-input-box after-init">
+              <div class="range-title">
+                <p>図形</p>
+              </div>
+              <div class="range-input">
+                <input id="vertices" max="36" min="3" step="1" type="range">
+              </div>
+              <div class="range-output">
+                <p id="vertices-output">正 x角形</p>
+              </div>
+            </div>
+            <p class="caution">※『図形』の項目は、初心に戻ったときに反映されます</p>
           </div>
+          <p>
+            意外とSVGの描画に関しては Internet Explorer が安定しています。<br>試せてないけど Edge もいいかも？
+          </p>
         </div>
       </div>
       <div id="footer">

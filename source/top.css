@@ -149,14 +149,20 @@ svg#sample {
   width: 100%;
   height: 100%; }
 
+div .slidebars {
+  width: 800px;
+  margin: 10px 20px 20px; }
+
 .range-input-box {
   display: table;
-  width: 800px;
-  margin: 0 20px 8px;
+  width: 100%;
+  margin: 0 0 8px;
   background: #cde2bb;
   border-bottom: 3px solid #1d7737;
   border-right: 5px solid #1d7737;
   border-radius: 2em; }
+  .range-input-box.after-init {
+    background: #f0c5bc; }
 
 .range-title, .range-input, .range-output {
   display: table-cell; }
@@ -171,6 +177,13 @@ svg#sample {
 .range-output {
   width: 8em;
   padding-left: 2em; }
+
+.caution {
+  margin-top: 10px;
+  color: #7c061a;
+  font-size: 82%;
+  text-align: right;
+  text-decoration: underline; }
 
 input[type="range"] {
   width: 40%;

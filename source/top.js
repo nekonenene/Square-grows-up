@@ -11,19 +11,20 @@ window.addEventListener("load", function () {
 	setZoomInputListener();
 	setStrokeWidthInputListener();
 
-	growOuterSquare(5);
+	growOuterSquare(4, undefined, 0.5);
 }, false);
 
 function growOuterSquare(_vertices, _r, _reducingLevel) {
 	deleteAllPath();
-
 	var vertices = _vertices;
+	// var reducingLevel = _reducingLevel; // 子供の正多角形の親に対しての大きさ
+	initVerticesRangeInput(vertices, 0.5);
+
 	var points = [];
 	var verticesAngle = PreviousPolygon.verticesAngle(vertices); // 頂点の角度
 	var firstAngle = verticesAngle / 2; // X軸に平行な中心点を通る線を水平としたときの、points[0]の傾き
 	var r = _r || 80; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
 	var centerPoint = [3 * r, 2.5 * r];
-	var reducingLevel = _reducingLevel || 0.5; // 子供の正多角形の親に対しての大きさ
 
 	points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
 	createPolygon(points);
@@ -38,6 +39,7 @@ function growOuterSquare(_vertices, _r, _reducingLevel) {
 	});
 
 	d3.select("button#outer-grow-button").on("click", function () {
+		var reducingLevel = Number(d3.selectAll("input#reducing-level")[0][0].value);
 		r *= reducingLevel;
 		if (vertices % 2 === 1) {
 			firstAngle += 180;
@@ -48,9 +50,13 @@ function growOuterSquare(_vertices, _r, _reducingLevel) {
 
 	d3.select("button#init-button").on("click", function () {
 		deleteAllPath();
+		vertices = d3.selectAll("input#vertices")[0][0].value;
+
 		firstAngle = initialPolygon.firstAngle;
 		r = initialPolygon.r;
-		createPolygon(initialPolygon.points);
+		points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
+		createPolygon(points);
+		initialPolygon = new PreviousPolygon(points, firstAngle, r, centerPoint);
 		previousPolygons = [initialPolygon];
 	});
 }
@@ -135,8 +141,23 @@ function deleteAllPath() {
 function initRangeInput(_defaultZoom, _defaultStrokeWidth) {
 	d3.selectAll("input#zoom-level")[0][0].value = _defaultZoom;
 	d3.selectAll("input#stroke-width-level")[0][0].value = _defaultStrokeWidth;
-	d3.selectAll(".range-output")[0][0].textContent = _defaultZoom.toFixed(1) + " 倍";
-	d3.selectAll(".range-output")[0][1].textContent = _defaultStrokeWidth.toFixed(1) + " px";
+	d3.selectAll("#zoom-level-output")[0][0].textContent = _defaultZoom.toFixed(1) + " 倍";
+	d3.selectAll("#stroke-width-level-output")[0][0].textContent = _defaultStrokeWidth.toFixed(1) + " px";
+}
+
+/** 正 x 角形を入力するスライダーのところ */
+function initVerticesRangeInput(_defaultVertices, _defaultReducingLevel) {
+	d3.selectAll("input#vertices")[0][0].value = _defaultVertices;
+	d3.selectAll("#vertices-output")[0][0].textContent = "正 " + _defaultVertices + " 角形";
+	d3.selectAll("input#reducing-level")[0][0].value = _defaultReducingLevel;
+	d3.selectAll("#reducing-level-output")[0][0].textContent = _defaultReducingLevel.toFixed(2) + " 倍";
+
+	d3.select("input#vertices").on("change", function () {
+		d3.selectAll("#vertices-output")[0][0].textContent = "正 " + this.value + " 角形";
+	});
+	d3.select("input#reducing-level").on("change", function () {
+		d3.selectAll("#reducing-level-output")[0][0].textContent = Number(this.value).toFixed(2) + " 倍";
+	});
 }
 
 /** 「zoom」のスライダーに対してリスナー設定 */
@@ -145,7 +166,7 @@ function setZoomInputListener() {
 		d3.select("svg#sample").selectAll("path").attr({
 			"transform": "translate(0, 0) scale(" + this.value + ")"
 		});
-		d3.selectAll(".range-output")[0][0].textContent = Number(this.value).toFixed(1) + " 倍";
+		d3.selectAll("#zoom-level-output")[0][0].textContent = Number(this.value).toFixed(1) + " 倍";
 		// TODO: ここの 150 はマジックナンバーなので、SVGのサイズに直したい
 		/*
   d3.selectAll( "svg#sample" )
@@ -161,7 +182,7 @@ function setStrokeWidthInputListener() {
 		d3.select("svg#sample").selectAll("path").attr({
 			"stroke-width": this.value
 		});
-		d3.selectAll(".range-output")[0][1].textContent = Number(this.value).toFixed(1) + " px";
+		d3.selectAll("#stroke-width-level-output")[0][1].textContent = Number(this.value).toFixed(1) + " px";
 	});
 }
 
