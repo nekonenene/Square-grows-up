@@ -8,7 +8,6 @@ window.addEventListener("load", function () {
 	"use strict";
 
 	initRangeInput(1.0, 2.5);
-	setZoomInputListener();
 	setStrokeWidthInputListener();
 
 	growOuterSquare(5, undefined, 0.5);
@@ -16,15 +15,18 @@ window.addEventListener("load", function () {
 
 function growOuterSquare(_vertices, _r, _reducingLevel) {
 	deleteAllPath();
+
 	var vertices = _vertices;
-	// var reducingLevel = _reducingLevel; // 子供の正多角形の親に対しての大きさ
-	initVerticesRangeInput(vertices, 0.5);
+	var r = _r || 80; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
+	var centerPoint = [3 * r, 3 * r];
+	setZoomInputListener(centerPoint);
+
+	var reducingLevel = _reducingLevel || 0.5; // 子供の正多角形の親に対しての大きさ
+	initVerticesRangeInput(vertices, reducingLevel);
 
 	var points = [];
 	var verticesAngle = PreviousPolygon.verticesAngle(vertices); // 頂点の角度
 	var firstAngle = verticesAngle / 2; // X軸に平行な中心点を通る線を水平としたときの、points[0]の傾き
-	var r = _r || 80; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
-	var centerPoint = [3 * r, 2.5 * r];
 
 	points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
 	createPolygon(points);
@@ -33,7 +35,6 @@ function growOuterSquare(_vertices, _r, _reducingLevel) {
 	var previousPolygons = [initialPolygon];
 
 	d3.select("button#inner-grow-button").on("click", function () {
-		// growSquareInside(level++);
 		points = calculateNextInnerPoints(points);
 		createPolygon(points);
 	});
@@ -161,18 +162,13 @@ function initVerticesRangeInput(_defaultVertices, _defaultReducingLevel) {
 }
 
 /** 「zoom」のスライダーに対してリスナー設定 */
-function setZoomInputListener() {
+function setZoomInputListener(_centerPoint) {
 	d3.select("input#zoom-level").on("change", function () {
 		d3.select("svg#sample").selectAll("path").attr({
 			"transform": "translate(0, 0) scale(" + this.value + ")"
 		});
 		d3.selectAll("#zoom-level-output")[0][0].textContent = Number(this.value).toFixed(1) + " 倍";
-		// TODO: ここの 150 はマジックナンバーなので、SVGのサイズに直したい
-		/*
-  d3.selectAll( "svg#sample" )
-  	.style("height", 150 * this.value + "px")
-  	.style("width" , 150 * this.value + "px");
-  */
+		d3.selectAll("svg#sample").style("width", _centerPoint[0] * 2 * this.value + "px").style("height", _centerPoint[1] * 2 * this.value + "px");
 	});
 }
 

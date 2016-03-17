@@ -136,8 +136,8 @@ button#init-button {
     background: #4b1717; }
 
 .svg-field-frame {
-  width: 800px;
-  height: 500px;
+  width: 1000px;
+  height: 560px;
   margin: 20px;
   padding: 30px;
   overflow: auto;
