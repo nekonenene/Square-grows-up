@@ -14,47 +14,50 @@ window.addEventListener("load", function () {
 	growOuterSquare(5);
 }, false);
 
-function growOuterSquare(_vertices) {
+function growOuterSquare(_vertices, _r) {
 	deleteAllPath();
 
 	var vertices = _vertices;
 	var points = [];
 	var verticesAngle = PreviousPolygon.verticesAngle(vertices); // 頂点の角度
 	var firstAngle = verticesAngle / 2; // X軸に平行な中心点を通る線を水平としたときの、points[0] の傾き
-	var r = 100; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
+	var r = _r || 80; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
 	var centerPoint = [2.5 * r, 2.5 * r];
+	var zoomLevel = 1;
 	var previousPolygons = [];
 
-	points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint, 1);
-	createSquare(points);
+	points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint, zoomLevel);
+	createPolygon(points);
 	previousPolygons.push(new PreviousPolygon(points, firstAngle, r, centerPoint));
 
 	d3.select("button#inner-grow-button").on("click", function () {
 		// growSquareInside(level++);
 		points = calculateNextInnerPoints(points);
-		createSquare(points);
+		createPolygon(points);
 	});
 
 	d3.select("button#grow-button").on("click", function () {
 		r /= 2;
 		if (vertices % 2 === 1) {
-			firstAngle += 360 / vertices / 2;
+			firstAngle += 180;
 		}
-		var ppCopy = previousPolygons.slice(0);
+
+		previousPolygons = createOuterRegularPolygons(previousPolygons, vertices, firstAngle, r, zoomLevel);
+	});
+
+	d3.select("button#init-button").on("click", function () {
+		deleteAllPath();
+		firstAngle = verticesAngle / 2; // X軸に平行な中心点を通る線を水平としたときの、points[0] の傾き
+		r = 100; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
 		previousPolygons = [];
-		for (var i = 0; i < ppCopy.length; ++i) {
-			for (var j = 0; j < vertices; ++j) {
-				var jNext = j !== vertices - 1 ? j + 1 : 0;
-				var centerX = ((ppCopy[i].points[j][0] + ppCopy[i].points[jNext][0]) / 2 - ppCopy[i].centerPoint[0]) * (3 / 2) + ppCopy[i].centerPoint[0];
-				var centerY = ((ppCopy[i].points[j][1] + ppCopy[i].points[jNext][1]) / 2 - ppCopy[i].centerPoint[1]) * (3 / 2) + ppCopy[i].centerPoint[1];
-				var centerPoint = [centerX, centerY];
-				points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint, 1);
-				createSquare(points);
-				previousPolygons.push(new PreviousPolygon(points, firstAngle, r, centerPoint));
-			}
-		}
+
+		points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint, zoomLevel);
+		createPolygon(points);
+		previousPolygons.push(new PreviousPolygon(points, firstAngle, r, centerPoint));
 	});
 }
+
+/** 前回作られた図形の情報、このクラスの配列を作り保存するとよい */
 
 var PreviousPolygon = function () {
 	function PreviousPolygon(_points, _firstAngle, _r, _centerPoint) {
@@ -79,6 +82,29 @@ var PreviousPolygon = function () {
 	return PreviousPolygon;
 }();
 
+/** 前回作られた正多角形の周りに半分の大きさの合同な図形を描く
+	@param previousPolygons : 前回作られた図形の情報 PreviousPolygon クラスが、作った個数ぶん格納された配列
+	他の引数は calculateRegularPolygonsPoints メソッドを参照のこと */
+
+
+function createOuterRegularPolygons(_previousPolygons, _vertices, _firstAngle, _r, _zoomLevel) {
+	var ppCopy = _previousPolygons.slice(0);
+	var creatingPolygons = [];
+
+	for (var i = 0; i < ppCopy.length; ++i) {
+		for (var j = 0; j < _vertices; ++j) {
+			var jNext = j !== _vertices - 1 ? j + 1 : 0;
+			var centerX = ((ppCopy[i].points[j][0] + ppCopy[i].points[jNext][0]) / 2 - ppCopy[i].centerPoint[0]) * (3 / 2) + ppCopy[i].centerPoint[0];
+			var centerY = ((ppCopy[i].points[j][1] + ppCopy[i].points[jNext][1]) / 2 - ppCopy[i].centerPoint[1]) * (3 / 2) + ppCopy[i].centerPoint[1];
+			var centerPoint = [centerX, centerY];
+			var points = calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, centerPoint, _zoomLevel);
+			createPolygon(points);
+			creatingPolygons.push(new PreviousPolygon(points, _firstAngle, _r, centerPoint));
+		}
+	}
+	return creatingPolygons;
+}
+
 /** 正多角形をPATHで描くために必要な座標群を計算する
  	@param vertices    : 頂点数、正X角形のX
 	@param firstAngle  : x軸と水平を0としたときの、最初の座標の傾き
@@ -86,8 +112,6 @@ var PreviousPolygon = function () {
 	@param centerPoint : 基準とする円の中心座標
 	@param zoomLevel   : 拡大率、よって実際の基準とする円の半径は r * zoomLevel となる
 	*/
-
-
 function calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, _centerPoint, _zoomLevel) {
 	var dividedAngle = 360 / _vertices;
 	var verticesAngle = 180 - dividedAngle; // 頂点の角度
@@ -102,27 +126,6 @@ function calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, _centerPoint
 		points.push([x, y]);
 	}
 	return points;
-}
-
-/** 四角の中に四角をどんどん作っていく */
-function growInnerSquare() {
-	var xx = 10;var yy = 130;
-	var points = [[xx, xx], [yy, xx], [yy, yy], [xx, yy]];
-	createSquare(points);
-	var level = 1;
-
-	d3.select("button#grow-button").on("click", function () {
-		// growSquareInside(level++);
-		points = calculateNextInnerPoints(points);
-		createSquare(points);
-	});
-
-	d3.select("button#init-button").on("click", function () {
-		deleteAllPath();
-		points = [[xx, xx], [yy, xx], [yy, yy], [xx, yy]];
-		createSquare(points);
-		var level = 1;
-	});
 }
 
 /** PATH を全て除去 */
@@ -166,7 +169,7 @@ function setStrokeWidthInputListener() {
 
 /** x点の座標をもらってきて、そこから x角形を作成する
 	@param points : [x, y] の座標が複数格納された二次元配列 */
-function createSquare(_points) {
+function createPolygon(_points) {
 	var svgField = d3.select("svg#sample");
 
 	var lineFunction = d3.svg.line().x(function (d, i) {
@@ -198,7 +201,7 @@ function createSquare(_points) {
 	});
 }
 
-/** 内側に x角形を作るための次の四点を計算する
+/** 内側に x角形を作るための次の点を計算する
 	@param previousPoints : 新しく作る図形の一個前の図形の座標たち */
 function calculateNextInnerPoints(_previousPoints) {
 	var vertices = _previousPoints.length;
