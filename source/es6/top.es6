@@ -187,7 +187,7 @@ function setStrokeWidthInputListener()
 				.attr({
 					"stroke-width" : this.value
 				});
-			d3.selectAll( "#stroke-width-level-output" )[0][1].textContent = Number(this.value).toFixed(1) + " px" ;
+			d3.selectAll( "#stroke-width-level-output" )[0][0].textContent = Number(this.value).toFixed(1) + " px" ;
 		});
 }
 
