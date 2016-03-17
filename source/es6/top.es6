@@ -9,23 +9,25 @@ window.addEventListener("load", function ()
 }, false);
 
 
-function growOuterSquare(_vertices, _r)
+function growOuterSquare(_vertices, _r, _reducingLevel)
 {
 	deleteAllPath();
 
 	var vertices = _vertices;
 	var points = [];
 	var verticesAngle = PreviousPolygon.verticesAngle(vertices); // 頂点の角度
-	var firstAngle = verticesAngle / 2; // X軸に平行な中心点を通る線を水平としたときの、points[0] の傾き
+	var firstAngle = verticesAngle / 2; // X軸に平行な中心点を通る線を水平としたときの、points[0]の傾き
 	var r = _r || 80; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
-	var centerPoint = [2.5 * r, 2.5 * r];
-	var zoomLevel = 1;
+	var centerPoint = [3 * r, 2.5 * r];
+	var reducingLevel = _reducingLevel || 0.5; // 子供の正多角形の親に対しての大きさ
 	var previousPolygons = [];
 
-	points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint, zoomLevel);
+	points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
 	createPolygon(points);
-	previousPolygons.push( new PreviousPolygon(points, firstAngle, r, centerPoint) );
 
+	var initialPolygon = new PreviousPolygon(points, firstAngle, r, centerPoint);
+	previousPolygons.push( initialPolygon );
+	
 	d3.select( "button#inner-grow-button" )
 		.on("click", function(){
 			// growSquareInside(level++);
@@ -35,22 +37,21 @@ function growOuterSquare(_vertices, _r)
 
 	d3.select( "button#grow-button" )
 		.on("click", function(){
-			r /= 2;
+			r *= reducingLevel;
 			if( vertices % 2 === 1){ firstAngle += 180; }
 
-			previousPolygons = createOuterRegularPolygons(previousPolygons, vertices, firstAngle, r, zoomLevel);
+			previousPolygons = createOuterRegularPolygons(previousPolygons, vertices, firstAngle, r, reducingLevel);
 		});
 
 	d3.select( "button#init-button" )
 	.on("click", function(){
 		deleteAllPath();
-		firstAngle = verticesAngle / 2; // X軸に平行な中心点を通る線を水平としたときの、points[0] の傾き
-		r = 100; // 最初の半径。2で割られていくので、2の階乗の値がもっとも良い
-		previousPolygons = [];
+		firstAngle = initialPolygon.firstAngle;
+		r = initialPolygon.r;
 
-		points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint, zoomLevel);
+		points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
 		createPolygon(points);
-		previousPolygons.push( new PreviousPolygon(points, firstAngle, r, centerPoint) );
+		previousPolygons = [ initialPolygon ];
 	});
 }
 
@@ -72,8 +73,9 @@ class PreviousPolygon
 
 /** 前回作られた正多角形の周りに半分の大きさの合同な図形を描く
 	@param previousPolygons : 前回作られた図形の情報 PreviousPolygon クラスが、作った個数ぶん格納された配列
+	@param reducingLevel : 子供の正多角形の、親から見ての倍率
 	他の引数は calculateRegularPolygonsPoints メソッドを参照のこと */
-function createOuterRegularPolygons(_previousPolygons, _vertices, _firstAngle, _r, _zoomLevel)
+function createOuterRegularPolygons(_previousPolygons, _vertices, _firstAngle, _r, _reducingLevel)
 {
 	var ppCopy = _previousPolygons.slice(0);
 	var creatingPolygons = [];
@@ -83,10 +85,10 @@ function createOuterRegularPolygons(_previousPolygons, _vertices, _firstAngle, _
 		for(var j = 0; j < _vertices; ++j)
 		{
 			var jNext = ( j !== (_vertices - 1) ? j + 1 : 0 );
-			var centerX = ( 1.5 * (ppCopy[i].points[j][0] + ppCopy[i].points[jNext][0]) - ppCopy[i].centerPoint[0] ) / 2 ;
-			var centerY = ( 1.5 * (ppCopy[i].points[j][1] + ppCopy[i].points[jNext][1]) - ppCopy[i].centerPoint[1] ) / 2 ;
+			var centerX = ( (ppCopy[i].points[j][0] + ppCopy[i].points[jNext][0]) / 2 - ppCopy[i].centerPoint[0] ) * ( 1 + _reducingLevel ) + ppCopy[i].centerPoint[0] ;
+			var centerY = ( (ppCopy[i].points[j][1] + ppCopy[i].points[jNext][1]) / 2 - ppCopy[i].centerPoint[1] ) * ( 1 + _reducingLevel ) + ppCopy[i].centerPoint[1] ;
 			var centerPoint = [centerX, centerY];
-			var points = calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, centerPoint, _zoomLevel);
+			var points = calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, centerPoint);
 			createPolygon( points );
 			creatingPolygons.push( new PreviousPolygon(points, _firstAngle, _r, centerPoint) );
 		}
@@ -99,9 +101,8 @@ function createOuterRegularPolygons(_previousPolygons, _vertices, _firstAngle, _
 	@param firstAngle  : x軸と水平を0としたときの、最初の座標の傾き
 	@param r           : 正多角形を引く基準とする円の半径
 	@param centerPoint : 基準とする円の中心座標
-	@param zoomLevel   : 拡大率、よって実際の基準とする円の半径は r * zoomLevel となる
 	*/
-function calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, _centerPoint, _zoomLevel)
+function calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, _centerPoint)
 {
 	var dividedAngle  = 360 / _vertices;
 	var verticesAngle = 180 - dividedAngle; // 頂点の角度
@@ -114,7 +115,6 @@ function calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, _centerPoint
 		var y = _r * Math.sin( angleRadian );
 
 		x += _centerPoint[0];  y += _centerPoint[1];
-		x *= _zoomLevel;       y *= _zoomLevel;
 		points.push([x, y]);
 	}
 	return points;
