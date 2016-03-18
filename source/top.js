@@ -31,7 +31,7 @@ function growOuterSquare(_vertices, _r, _reducingLevel) {
 	points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
 	createPolygon(points);
 
-	var initialPolygon = new PreviousPolygon(points, firstAngle, r, centerPoint);
+	var initialPolygon = new PreviousPolygon(vertices, points, firstAngle, r, centerPoint);
 	var previousPolygons = [initialPolygon];
 
 	d3.select("button#inner-grow-button").on("click", function () {
@@ -50,24 +50,34 @@ function growOuterSquare(_vertices, _r, _reducingLevel) {
 	});
 
 	d3.select("button#init-button").on("click", function () {
-		deleteAllPath();
-		vertices = d3.selectAll("input#vertices")[0][0].value;
-
-		firstAngle = PreviousPolygon.verticesAngle(vertices) / 2;
-		r = initialPolygon.r;
-		points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
-		createPolygon(points);
-		initialPolygon = new PreviousPolygon(points, firstAngle, r, centerPoint);
+		initialPolygon = createInitialPolygon(initialPolygon);
+		vertices = initialPolygon.vertices;
+		centerPoint = initialPolygon.centerPoint;
 		previousPolygons = [initialPolygon];
 	});
+}
+
+/** init-button （さいしょから）を押したときの挙動 */
+function createInitialPolygon(_initialPolygon) {
+	deleteAllPath();
+	var vertices = d3.selectAll("input#vertices")[0][0].value;
+	var firstAngle = PreviousPolygon.verticesAngle(vertices) / 2;
+	var r = _initialPolygon.r;
+	var centerPoint = _initialPolygon.centerPoint;
+
+	var points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
+	createPolygon(points);
+
+	return new PreviousPolygon(vertices, points, firstAngle, r, centerPoint);
 }
 
 /** 前回作られた図形の情報、このクラスの配列を作り保存するとよい */
 
 var PreviousPolygon = function () {
-	function PreviousPolygon(_points, _firstAngle, _r, _centerPoint) {
+	function PreviousPolygon(_vertices, _points, _firstAngle, _r, _centerPoint) {
 		_classCallCheck(this, PreviousPolygon);
 
+		this.vertices = _vertices;
 		this.points = _points;
 		this.firstAngle = _firstAngle;
 		this.r = _r;
@@ -105,7 +115,7 @@ function createOuterRegularPolygons(_previousPolygons, _vertices, _firstAngle, _
 			var centerPoint = [centerX, centerY];
 			var points = calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, centerPoint);
 			createPolygon(points);
-			creatingPolygons.push(new PreviousPolygon(points, _firstAngle, _r, centerPoint));
+			creatingPolygons.push(new PreviousPolygon(_vertices, points, _firstAngle, _r, centerPoint));
 		}
 	}
 	return creatingPolygons;
