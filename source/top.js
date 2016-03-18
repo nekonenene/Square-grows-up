@@ -22,7 +22,8 @@ function growOuterSquare(_vertices, _r, _reducingLevel) {
 	setZoomInputListener(centerPoint);
 
 	var reducingLevel = _reducingLevel || 0.5; // 子供の正多角形の親に対しての大きさ
-	initVerticesRangeInput(vertices, reducingLevel);
+	initVerticesRangeInput(vertices);
+	initReducingLevelRangeInput(reducingLevel);
 
 	var points = [];
 	var verticesAngle = PreviousPolygon.verticesAngle(vertices); // 頂点の角度
@@ -31,7 +32,7 @@ function growOuterSquare(_vertices, _r, _reducingLevel) {
 	points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
 	createPolygon(points);
 
-	var initialPolygon = new PreviousPolygon(points, firstAngle, r, centerPoint);
+	var initialPolygon = new PreviousPolygon(vertices, points, firstAngle, r, centerPoint);
 	var previousPolygons = [initialPolygon];
 
 	d3.select("button#inner-grow-button").on("click", function () {
@@ -50,24 +51,36 @@ function growOuterSquare(_vertices, _r, _reducingLevel) {
 	});
 
 	d3.select("button#init-button").on("click", function () {
-		deleteAllPath();
-		vertices = d3.selectAll("input#vertices")[0][0].value;
-
-		firstAngle = PreviousPolygon.verticesAngle(vertices) / 2;
+		initialPolygon = createInitialPolygon(initialPolygon);
+		vertices = initialPolygon.vertices;
+		firstAngle = initialPolygon.firstAngle;
 		r = initialPolygon.r;
-		points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
-		createPolygon(points);
-		initialPolygon = new PreviousPolygon(points, firstAngle, r, centerPoint);
+		centerPoint = initialPolygon.centerPoint;
 		previousPolygons = [initialPolygon];
 	});
+}
+
+/** init-button （さいしょから）を押したときの挙動 */
+function createInitialPolygon(_initialPolygon) {
+	deleteAllPath();
+	var vertices = d3.selectAll("input#vertices")[0][0].value;
+	var firstAngle = PreviousPolygon.verticesAngle(vertices) / 2;
+	var r = _initialPolygon.r;
+	var centerPoint = _initialPolygon.centerPoint;
+
+	var points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
+	createPolygon(points);
+
+	return new PreviousPolygon(vertices, points, firstAngle, r, centerPoint);
 }
 
 /** 前回作られた図形の情報、このクラスの配列を作り保存するとよい */
 
 var PreviousPolygon = function () {
-	function PreviousPolygon(_points, _firstAngle, _r, _centerPoint) {
+	function PreviousPolygon(_vertices, _points, _firstAngle, _r, _centerPoint) {
 		_classCallCheck(this, PreviousPolygon);
 
+		this.vertices = _vertices;
 		this.points = _points;
 		this.firstAngle = _firstAngle;
 		this.r = _r;
@@ -105,7 +118,7 @@ function createOuterRegularPolygons(_previousPolygons, _vertices, _firstAngle, _
 			var centerPoint = [centerX, centerY];
 			var points = calculateRegularPolygonsPoints(_vertices, _firstAngle, _r, centerPoint);
 			createPolygon(points);
-			creatingPolygons.push(new PreviousPolygon(points, _firstAngle, _r, centerPoint));
+			creatingPolygons.push(new PreviousPolygon(_vertices, points, _firstAngle, _r, centerPoint));
 		}
 	}
 	return creatingPolygons;
@@ -147,17 +160,23 @@ function initRangeInput(_defaultZoom, _defaultStrokeWidth) {
 }
 
 /** 正 x 角形を入力するスライダーのところ */
-function initVerticesRangeInput(_defaultVertices, _defaultReducingLevel) {
+function initVerticesRangeInput(_defaultVertices) {
 	d3.selectAll("input#vertices")[0][0].value = _defaultVertices;
 	d3.selectAll("#vertices-output")[0][0].textContent = "正 " + _defaultVertices + " 角形";
-	d3.selectAll("input#reducing-level")[0][0].value = _defaultReducingLevel;
-	d3.selectAll("#reducing-level-output")[0][0].textContent = _defaultReducingLevel.toFixed(2) + " 倍";
 
 	d3.select("input#vertices").on("change", function () {
 		d3.selectAll("#vertices-output")[0][0].textContent = "正 " + this.value + " 角形";
 	});
+}
+
+function initReducingLevelRangeInput(_defaultReducingLevel) {
+	var rounded = 2; // 小数点以下の何桁までを表示するか
+
+	d3.selectAll("input#reducing-level")[0][0].value = _defaultReducingLevel;
+	d3.selectAll("#reducing-level-output")[0][0].textContent = _defaultReducingLevel.toFixed(rounded) + " 倍";
+
 	d3.select("input#reducing-level").on("change", function () {
-		d3.selectAll("#reducing-level-output")[0][0].textContent = Number(this.value).toFixed(2) + " 倍";
+		d3.selectAll("#reducing-level-output")[0][0].textContent = Number(this.value).toFixed(rounded) + " 倍";
 	});
 }
 

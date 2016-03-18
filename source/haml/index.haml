@@ -3,10 +3,10 @@
 	%head
 		%meta{charset: "utf-8"}
 		%meta{"http-equiv": "X-UA-Compatible", content: "IE=edge"}
-		%meta{name: "viewport", content: "width=device-width, initial-scale=1"}
+		%meta{name: "viewport", content: "width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=10.0, user-scalable=yes"}
 
-		%meta{name: "description" , content: ""}
-		%meta{name: "keywords"    , content: ""}
+		%meta{name: "description" , content: "正多角形がかわいく育つのを観察する"}
+		%meta{name: "keywords"    , content: "図形, 正方形, 正多角形"}
 		%meta{name: "author"      , content: "nekonenene"}
 		%link{rel: "shortcut icon", href: "./img/favicon.ico"}
 
@@ -48,21 +48,21 @@
 							.range-title
 								%p zoom
 							.range-input
-								%input#zoom-level{type:"range", min:0.3, max:15, step:0.1, value:1}
+								%input#zoom-level{type:"range", min:0.1, max:8, step:0.01, value:1}
 							.range-output
 								%p#zoom-level-output x.x 倍
 						.range-input-box
 							.range-title
 								%p 線幅
 							.range-input
-								%input#stroke-width-level{type:"range", min:0.1, max:8, step:0.1}
+								%input#stroke-width-level{type:"range", min:0.1, max:5, step:0.1}
 							.range-output
 								%p#stroke-width-level-output x.x px
 						.range-input-box
 							.range-title
 								%p なかま
 							.range-input
-								%input#reducing-level{type:"range", min:0.01, max:1, step:0.01}
+								%input#reducing-level{type:"range", min:0.1, max:4, step:0.01}
 							.range-output
 								%p#reducing-level-output x.xx 倍
 						.range-input-box.after-init
@@ -72,10 +72,18 @@
 								%input#vertices{type:"range", min:3, max:36, step:1}
 							.range-output
 								%p#vertices-output 正 x 角形
-						%p.caution ※『図形』の項目は、初心に戻ったときに反映されます
+						%p.caution
+							※『図形』の項目は、初心に戻ったときに反映されます
+							%br>
+							※なかまを呼びすぎると、ブラウザがやられます
 					%p
 						意外とSVGの描画に関しては Internet Explorer が安定しています。
 						%br>
+						（SVG として保存するのは Internet Explorer でないと出来ませんでした）
+						%br>
 						試せてないけど Edge もいいかも？
 			#footer
-				%a{href: "http://nekonenene.hatenablog.com/", target: "_blank", title: "ハトネコエWebがくしゅうちょう"} 制作：ハトネコエ
+				%a{href: "http://nekonenene.hatenablog.com/", target: "_blank", title: "ハトネコエWebがくしゅうちょう"}>
+					制作：ハトネコエ
+				%a{href: "https://twitter.com/nekonenene", target: "_blank", title: "Twitter @nekonenene"}>
+					(@nekonenene)
