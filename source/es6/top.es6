@@ -21,11 +21,11 @@ function growOuterSquare(_vertices, _r, _reducingLevel)
 	initVerticesRangeInput(vertices);
 	initReducingLevelRangeInput(reducingLevel);
 
-	var points = [];
 	var verticesAngle = PreviousPolygon.verticesAngle(vertices); // 頂点の角度
 	var firstAngle = verticesAngle / 2; // X軸に平行な中心点を通る線を水平としたときの、points[0]の傾き
 
-	points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
+	var points = calculateRegularPolygonsPoints(vertices, firstAngle, r, centerPoint);
+	var innerPoints = points; // 内側に育つ正多角形の頂点座標
 	createPolygon(points);
 
 	var initialPolygon = new PreviousPolygon(vertices, points, firstAngle, r, centerPoint);
@@ -33,8 +33,8 @@ function growOuterSquare(_vertices, _r, _reducingLevel)
 
 	d3.select( "button#inner-grow-button" )
 		.on("click", function(){
-			points = calculateNextInnerPoints( points );
-			createPolygon( points );
+			innerPoints = calculateNextInnerPoints( innerPoints );
+			createPolygon( innerPoints );
 		});
 
 	d3.select( "button#outer-grow-button" )
@@ -54,6 +54,7 @@ function growOuterSquare(_vertices, _r, _reducingLevel)
 			r                = initialPolygon.r;
 			centerPoint      = initialPolygon.centerPoint;
 			previousPolygons = [ initialPolygon ];
+			innerPoints = initialPolygon.points;
 		});
 }
 
