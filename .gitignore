@@ -2,6 +2,7 @@
 
 資料/
 optimized/
+Gemfile.lock
 
 ### Bundler
 .bundle/
