@@ -3,9 +3,9 @@
 <head>
 <meta charset=utf-8>
 <meta content="IE=edge"http-equiv=X-UA-Compatible>
-<meta content="width=device-width,initial-scale=1"name=viewport>
-<meta content=""name=description>
-<meta content=""name=keywords>
+<meta content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=10,user-scalable=yes"name=viewport>
+<meta content=正多角形がかわいく育つのを観察する name=description>
+<meta content="図形, 正方形, 正多角形"name=keywords>
 <meta content=nekonenene name=author>
 <link href=./img/favicon.ico rel="shortcut icon">
 <meta content=#2b0de8 name=theme-color>
@@ -37,7 +37,7 @@
 <p>zoom</p>
 </div>
 <div class=range-input>
-<input id=zoom-level max=15 min=0.3 step=0.1 type=range value=1>
+<input id=zoom-level max=8 min=0.1 step=0.01 type=range value=1>
 </div>
 <div class=range-output>
 <p id=zoom-level-output>x.x 倍</p>
@@ -48,7 +48,7 @@
 <p>線幅</p>
 </div>
 <div class=range-input>
-<input id=stroke-width-level max=8 min=0.1 step=0.1 type=range>
+<input id=stroke-width-level max=5 min=0.1 step=0.1 type=range>
 </div>
 <div class=range-output>
 <p id=stroke-width-level-output>x.x px</p>
@@ -59,7 +59,7 @@
 <p>なかま</p>
 </div>
 <div class=range-input>
-<input id=reducing-level max=1 min=0.01 step=0.01 type=range>
+<input id=reducing-level max=4 min=0.1 step=0.01 type=range>
 </div>
 <div class=range-output>
 <p id=reducing-level-output>x.xx 倍</p>
@@ -76,16 +76,20 @@
 <p id=vertices-output>正 x 角形</p>
 </div>
 </div>
-<p class=caution>※『図形』の項目は、初心に戻ったときに反映されます</p>
+<p class=caution>
+※『図形』の項目は、初心に戻ったときに反映されます<br>※なかまを呼びすぎると、ブラウザがやられます
+</p>
 </div>
 <p>
-意外とSVGの描画に関しては Internet Explorer が安定しています。<br>試せてないけど Edge もいいかも？
+意外とSVGの描画に関しては Internet Explorer が安定しています。<br>（SVG として保存するのは Internet Explorer でないと出来ませんでした）<br>試せてないけど Edge もいいかも？
 </p>
 </div>
 </div>
-<div id=footer>
-<a href=http://nekonenene.hatenablog.com/ target=_blank title=ハトネコエWebがくしゅうちょう>制作：ハトネコエ</a>
-</div>
+<div id=footer><a href=http://nekonenene.hatenablog.com/ target=_blank title=ハトネコエWebがくしゅうちょう>
+制作：ハトネコエ
+</a><a href=https://twitter.com/nekonenene target=_blank title="Twitter @nekonenene">
+(@nekonenene)
+</a></div>
 </div>
 </body>
 </html>
