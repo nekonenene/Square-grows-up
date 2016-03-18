@@ -53,6 +53,8 @@ function growOuterSquare(_vertices, _r, _reducingLevel) {
 	d3.select("button#init-button").on("click", function () {
 		initialPolygon = createInitialPolygon(initialPolygon);
 		vertices = initialPolygon.vertices;
+		firstAngle = initialPolygon.firstAngle;
+		r = initialPolygon.r;
 		centerPoint = initialPolygon.centerPoint;
 		previousPolygons = [initialPolygon];
 	});

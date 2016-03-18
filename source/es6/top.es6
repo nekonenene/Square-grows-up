@@ -50,6 +50,8 @@ function growOuterSquare(_vertices, _r, _reducingLevel)
 		.on("click", function(){
 			initialPolygon = createInitialPolygon(initialPolygon);
 			vertices         = initialPolygon.vertices;
+			firstAngle       = initialPolygon.firstAngle;
+			r                = initialPolygon.r;
 			centerPoint      = initialPolygon.centerPoint;
 			previousPolygons = [ initialPolygon ];
 		});
