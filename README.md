@@ -1,7 +1,7 @@
 # Square grows up!
 
-** ここで見られます！ **  
-** [http://nekonenene.github.io/Square_grows_up/](http://nekonenene.github.io/Square_grows_up/) **
+**ここで見られます！**  
+**[http://nekonenene.github.io/Square_grows_up/](http://nekonenene.github.io/Square_grows_up/)**
 
 # 開発するには……
 
