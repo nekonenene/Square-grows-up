@@ -22,7 +22,8 @@ function growOuterSquare(_vertices, _r, _reducingLevel) {
 	setZoomInputListener(centerPoint);
 
 	var reducingLevel = _reducingLevel || 0.5; // 子供の正多角形の親に対しての大きさ
-	initVerticesRangeInput(vertices, reducingLevel);
+	initVerticesRangeInput(vertices);
+	initReducingLevelRangeInput(reducingLevel);
 
 	var points = [];
 	var verticesAngle = PreviousPolygon.verticesAngle(vertices); // 頂点の角度
@@ -157,17 +158,23 @@ function initRangeInput(_defaultZoom, _defaultStrokeWidth) {
 }
 
 /** 正 x 角形を入力するスライダーのところ */
-function initVerticesRangeInput(_defaultVertices, _defaultReducingLevel) {
+function initVerticesRangeInput(_defaultVertices) {
 	d3.selectAll("input#vertices")[0][0].value = _defaultVertices;
 	d3.selectAll("#vertices-output")[0][0].textContent = "正 " + _defaultVertices + " 角形";
-	d3.selectAll("input#reducing-level")[0][0].value = _defaultReducingLevel;
-	d3.selectAll("#reducing-level-output")[0][0].textContent = _defaultReducingLevel.toFixed(2) + " 倍";
 
 	d3.select("input#vertices").on("change", function () {
 		d3.selectAll("#vertices-output")[0][0].textContent = "正 " + this.value + " 角形";
 	});
+}
+
+function initReducingLevelRangeInput(_defaultReducingLevel) {
+	var rounded = 2; // 小数点以下の何桁までを表示するか
+
+	d3.selectAll("input#reducing-level")[0][0].value = _defaultReducingLevel;
+	d3.selectAll("#reducing-level-output")[0][0].textContent = _defaultReducingLevel.toFixed(rounded) + " 倍";
+
 	d3.select("input#reducing-level").on("change", function () {
-		d3.selectAll("#reducing-level-output")[0][0].textContent = Number(this.value).toFixed(2) + " 倍";
+		d3.selectAll("#reducing-level-output")[0][0].textContent = Number(this.value).toFixed(rounded) + " 倍";
 	});
 }
 
